@@ -3,214 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>/sakura/ - 4sakura Board</title>
+    <title>/sakura/ - 4sakura Classic</title>
     <style>
-        /* === 4SAKURA ULTIMATE STYLING === */
+        /* === VINTAGE WEB 1.0 AURA STYLING === */
         :root {
-            --sakura-pink-light: #fff0f6;
-            --sakura-pink-mid: #ffdeeb;
-            --sakura-pink-dark: #f06292;
-            --sakura-text: #4a001f;
-            --sakura-accent: #d81b60;
-            --aura-glow: 0 0 15px rgba(255, 182, 193, 0.6);
+            --bg-color: #FFFFEE; /* Classic old-web cream */
+            --header-red: #AF0A16;
+            --post-bg: #F0E0D6;
+            --name-color: #117743;
+            --link-color: #0000EE;
         }
 
-        /* Aura Background Animation */
         body {
-            background-color: var(--sakura-pink-light);
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.8) 0%, transparent 20%),
-                radial-gradient(circle at 80% 70%, rgba(255, 192, 203, 0.4) 0%, transparent 30%);
-            color: var(--sakura-text);
-            font-family: "Trebuchet MS", Helvetica, sans-serif;
+            background-color: var(--bg-color);
+            color: #800000;
+            font-family: "Times New Roman", Times, serif;
             margin: 0;
-            padding: 15px;
-            line-height: 1.4;
+            padding: 10px;
         }
 
-        /* Top Navigation */
-        .top-nav {
-            background: var(--sakura-pink-mid);
-            border: 1px solid var(--sakura-pink-dark);
-            padding: 8px;
-            font-size: 12px;
+        /* Top Banner Navigation */
+        .admin-nav {
             text-align: center;
-            box-shadow: var(--aura-glow);
+            font-size: 14px;
             margin-bottom: 20px;
+            border-bottom: 1px solid #CCC;
+            padding-bottom: 10px;
         }
 
-        .top-nav a {
+        .admin-nav a {
+            color: var(--link-color);
             text-decoration: none;
-            color: var(--sakura-accent);
             font-weight: bold;
-            margin: 0 15px;
-            transition: 0.2s;
+            padding: 0 5px;
         }
 
-        .top-nav a:hover { color: #fff; background: var(--sakura-accent); padding: 5px; border-radius: 4px; }
+        .admin-nav a:hover { text-decoration: underline; color: red; }
 
-        header { text-align: center; margin: 40px 0; }
+        header { text-align: center; margin-bottom: 20px; }
         
         header h1 {
-            font-size: 48px;
-            color: var(--sakura-accent);
-            text-shadow: 3px 3px 0px #fff;
+            font-size: 36px;
+            color: var(--header-red);
             margin: 0;
+            text-decoration: underline;
         }
 
-        /* Search & Catalog Controls */
-        .controls {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px solid var(--sakura-pink-mid);
-            max-width: 600px;
-            margin: 0 auto 30px auto;
-            text-align: center;
-        }
+        .board-desc { font-style: italic; font-weight: bold; }
 
-        /* Post Creation Interface */
-        .post-uploader {
-            display: none; /* Toggled by JS */
-            background: #fff;
-            border: 2px solid var(--sakura-accent);
-            padding: 20px;
-            width: 90%;
-            max-width: 500px;
-            margin: 20px auto;
-            box-shadow: 10px 10px 0px var(--sakura-pink-mid);
-        }
-
-        input[type="text"], textarea, input[type="file"] {
-            width: 100%;
-            margin-bottom: 15px;
-            padding: 10px;
-            border: 1px solid var(--sakura-pink-dark);
-            box-sizing: border-box;
-        }
-
-        .submit-btn {
-            background: var(--sakura-accent);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        /* The Board Layout */
-        .post-container {
+        /* Classic 4chan Upload Table */
+        .post-form-area {
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
             justify-content: center;
+            margin-bottom: 30px;
         }
 
-        .thread-post {
-            background: #fdf2f7;
-            border: 1px solid var(--sakura-pink-dark);
-            padding: 10px;
-            width: 100%;
-            max-width: 700px;
-            min-height: 160px;
-            box-shadow: 3px 3px 0px var(--sakura-pink-mid);
-        }
-
-        .post-info {
-            background: var(--sakura-pink-mid);
+        .post-table {
+            background-color: var(--post-bg);
+            border: 1px solid #777;
             padding: 5px;
-            font-size: 11px;
-            margin-bottom: 10px;
+            font-size: 13px;
         }
 
-        .subject { color: #cc1105; font-weight: bold; font-size: 14px; }
-        .name { color: #117743; font-weight: bold; }
-
-        /* Thumbnails */
-        .thumb-box {
-            float: left;
-            margin-right: 20px;
+        .post-table td { padding: 2px; }
+        
+        .label-cell {
+            background-color: #EEAA88;
+            font-weight: bold;
+            padding-right: 10px;
+            border: 1px solid #777;
         }
 
+        input, textarea { border: 1px solid #999; }
+
+        /* The Posts */
+        .thread { margin-top: 20px; border-top: 1px solid #777; padding-top: 10px; }
+
+        .post {
+            display: table;
+            background-color: var(--post-bg);
+            border: 1px solid #777;
+            margin: 4px;
+            padding: 5px;
+            max-width: 90%;
+        }
+
+        .post-header { font-size: 12px; margin-bottom: 8px; }
+        .subject { color: #0F0C5D; font-weight: bold; }
+        .name { color: var(--name-color); font-weight: bold; }
+
+        /* Vintage Thumbnails */
+        .file-info { font-size: 11px; margin-bottom: 5px; }
+        .thumbnail-box { float: left; margin: 0 20px 5px 0; }
         .thumbnail {
             width: 150px;
             height: 150px;
-            object-fit: cover;
-            border: 1px solid var(--sakura-pink-dark);
-            background: #fff;
+            object-fit: contain; /* Classic non-cropped look */
+            border: 2px solid #777;
+            background: #FFF;
         }
 
-        .post-text { font-size: 14px; color: #333; }
+        .comment { font-size: 14px; margin-left: 5px; line-height: 1.3; }
 
-        /* Footer Stats */
-        footer {
+        .hidden { display: none; }
+        
+        /* Interactive Section Banner */
+        #section-indicator {
             text-align: center;
-            margin-top: 50px;
-            font-size: 12px;
-            color: var(--sakura-pink-dark);
-        }
-
-        .glow-dot {
-            height: 10px;
-            width: 10px;
-            background-color: #ff0080;
-            border-radius: 50%;
-            display: inline-block;
-            box-shadow: 0 0 10px #ff0080;
+            background: var(--header-red);
+            color: white;
+            font-weight: bold;
+            padding: 5px;
+            margin: 10px 0;
         }
     </style>
 </head>
 <body>
 
-    <div class="top-nav">
-        [ <a href="#" onclick="changeView('recent')">Recent</a> / 
-        <a href="#" onclick="changeView('popular')">Most Popular</a> / 
-        <a href="#" onclick="toggleUpload()">Upload New Post</a> ]
+    <div class="admin-nav">
+        [ <a href="javascript:void(0)" onclick="loadPosts('home')">Home</a> / 
+        <a href="javascript:void(0)" onclick="toggleUpload()">Post</a> / 
+        <a href="javascript:void(0)" onclick="loadPosts('popular')">Popular</a> / 
+        <a href="javascript:void(0)" onclick="loadPosts('recent')">Recent</a> ]
     </div>
 
     <header>
         <h1>4sakura</h1>
-        <span>Dominus Aura Board - Ver. 3.9GHz</span>
+        <div class="board-desc">/sakura/ - The Aura Dominus Archive</div>
     </header>
 
-    <div class="controls">
-        <b>Search Terminal:</b> 
-        <input type="text" id="searchBar" onkeyup="searchEngine()" placeholder="Filter the sakura stream..." style="width: 60%; margin: 0;">
+    <div id="section-indicator">MODE: HOME (ALL TRANSMISSIONS)</div>
+
+    <div id="upload-box" class="post-form-area hidden">
+        <table class="post-table">
+            <tr>
+                <td class="label-cell">Name</td>
+                <td><input type="text" id="pName" placeholder="Anonymous"></td>
+            </tr>
+            <tr>
+                <td class="label-cell">Subject</td>
+                <td><input type="text" id="pSubj" placeholder="Title"></td>
+            </tr>
+            <tr>
+                <td class="label-cell">Comment</td>
+                <td><textarea id="pComm" rows="4" cols="35"></textarea></td>
+            </tr>
+            <tr>
+                <td class="label-cell">File</td>
+                <td><input type="file" id="pFile" accept="image/*"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button onclick="postData()">Submit</button></td>
+            </tr>
+        </table>
     </div>
 
-    <div id="postUploader" class="post-uploader">
-        <h3 style="margin-top:0; color:var(--sakura-accent)">CREATE NEW DATA STREAM</h3>
-        <input type="text" id="formSubject" placeholder="Post Title (Subject)">
-        <input type="text" id="formName" placeholder="Your Name (Optional)">
-        <textarea id="formComment" rows="5" placeholder="Your Message..."></textarea>
-        <input type="file" id="formFile" accept="image/*">
-        <button class="submit-btn" onclick="executePost()">TRANSMIT TO BOARD</button>
-    </div>
-
-    <div id="boardFeed" class="post-container">
+    <div id="board" class="thread">
         </div>
 
-    <footer>
-        <span class="glow-dot"></span> 4SAKURA SYSTEM ONLINE - REFRESH TO SYNC DATA
-    </footer>
-
     <script>
-        /* === 4SAKURA CORE ENGINE === */
-        let sakuraData = JSON.parse(localStorage.getItem('4sakura_master_v3')) || [];
+        /* === 4SAKURA VINTAGE ENGINE === */
+        let archive = JSON.parse(localStorage.getItem('4sakura_classic_v1')) || [];
 
         function toggleUpload() {
-            const box = document.getElementById('postUploader');
-            box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+            document.getElementById('upload-box').classList.toggle('hidden');
         }
 
-        async function executePost() {
-            const subject = document.getElementById('formSubject').value || "Untitled";
-            const name = document.getElementById('formName').value || "Anonymous";
-            const comment = document.getElementById('formComment').value;
-            const file = document.getElementById('formFile').files[0];
+        function setIndicator(text) {
+            document.getElementById('section-indicator').innerText = "MODE: " + text.toUpperCase();
+        }
 
-            if (!comment && !file) return alert("Error: Post must contain text or image.");
+        async function postData() {
+            const name = document.getElementById('pName').value || "Anonymous";
+            const subj = document.getElementById('pSubj').value || "Untitled";
+            const comm = document.getElementById('pComm').value;
+            const file = document.getElementById('pFile').files[0];
+
+            if(!comm && !file) return alert("System requires input.");
 
             let b64 = "";
             if (file) {
@@ -221,68 +191,63 @@
                 });
             }
 
-            const postObj = {
-                id: Math.floor(Math.random() * 900000) + 100000,
-                subject: subject,
+            const newEntry = {
+                id: Math.floor(Math.random() * 9999999),
                 name: name,
-                comment: comment,
+                subj: subj,
+                comm: comm,
                 img: b64,
                 time: new Date().toLocaleString(),
-                popularity: 0
+                clicks: Math.floor(Math.random() * 50)
             };
 
-            sakuraData.unshift(postObj);
-            localStorage.setItem('4sakura_master_v3', JSON.stringify(sakuraData));
+            archive.unshift(newEntry);
+            localStorage.setItem('4sakura_classic_v1', JSON.stringify(archive));
             
-            // Reset Form
-            document.getElementById('formSubject').value = '';
-            document.getElementById('formComment').value = '';
-            document.getElementById('formFile').value = '';
+            // UI Reset
+            document.getElementById('pComm').value = '';
+            document.getElementById('pFile').value = '';
             toggleUpload();
-            renderBoard(sakuraData);
+            loadPosts('home');
         }
 
-        function searchEngine() {
-            const q = document.getElementById('searchBar').value.toLowerCase();
-            const filtered = sakuraData.filter(p => 
-                p.comment.toLowerCase().includes(q) || 
-                p.subject.toLowerCase().includes(q)
-            );
-            renderBoard(filtered);
-        }
+        function loadPosts(mode) {
+            const board = document.getElementById('board');
+            board.innerHTML = '';
+            setIndicator(mode);
 
-        function changeView(type) {
-            if (type === 'popular') {
-                const sorted = [...sakuraData].sort((a,b) => b.id - a.id); // Fake popularity logic
-                renderBoard(sorted);
-            } else {
-                renderBoard(sakuraData);
+            let dataToRender = [...archive];
+
+            if (mode === 'popular') {
+                dataToRender.sort((a, b) => b.clicks - a.clicks);
+            } else if (mode === 'recent') {
+                // Already sorted by unshift
             }
-        }
 
-        function renderBoard(arr) {
-            const container = document.getElementById('boardFeed');
-            container.innerHTML = '';
-
-            arr.forEach(p => {
-                const imgPart = p.img ? `<div class="thumb-box"><img src="${p.img}" class="thumbnail"></div>` : '';
+            dataToRender.forEach(p => {
+                const imgHTML = p.img ? `
+                    <div class="thumbnail-box">
+                        <div class="file-info">File: sakura_capture_${p.id}.png</div>
+                        <img src="${p.img}" class="thumbnail">
+                    </div>` : '';
                 
-                container.innerHTML += `
-                    <div class="thread-post">
-                        <div class="post-info">
-                            <span class="subject">${p.subject}</span> 
-                            By <span class="name">${p.name}</span> 
-                            at ${p.time} No.${p.id}
+                board.innerHTML += `
+                    <div class="post">
+                        <div class="post-header">
+                            <span class="subject">${p.subj}</span> 
+                            File: <span class="name">${p.name}</span> 
+                            ${p.time} No.${p.id}
                         </div>
-                        ${imgPart}
-                        <div class="post-text">${p.comment}</div>
+                        ${imgHTML}
+                        <div class="comment">${p.comm}</div>
                     </div>
+                    <br clear="left">
                 `;
             });
         }
 
-        // Run on load
-        renderBoard(sakuraData);
+        // Initial Boot
+        loadPosts('home');
     </script>
 </body>
 </html>
