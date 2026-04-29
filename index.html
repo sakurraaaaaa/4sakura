@@ -3,257 +3,256 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aura Board // Elite Edition</title>
+    <title>/sakura/ - 4sakura</title>
     <style>
-        /* === THE AURA THEME === */
+        /* === THE 4SAKURA SYSTEM (400+ lines potential) === */
         :root {
-            --aura-pink: #ffc2d1;
-            --aura-white: #ffffff;
-            --aura-glow: rgba(255, 182, 193, 0.5);
-            --text-dark: #4a4a4a;
-            --soft-border: #ffe5ec;
+            --sakura-pink: #ffdae9;
+            --sakura-border: #f8bbd0;
+            --sakura-text: #880e4f;
+            --sakura-bg: #fff5f8;
+            --post-bg: #fce4ec;
         }
 
         body {
-            background: linear-gradient(180deg, #ffffff 0%, #fff0f3 100%);
-            color: var(--text-dark);
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--sakura-bg);
+            color: var(--sakura-text);
+            font-family: arial,helvetica,sans-serif;
+            font-size: 13px;
             margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            padding: 10px;
         }
 
-        /* Animated Header */
-        header {
-            width: 100%;
-            padding: 50px 0;
-            background: var(--aura-white);
-            text-align: center;
-            border-bottom: 5px solid var(--aura-pink);
-            box-shadow: 0 10px 40px var(--aura-glow);
-            margin-bottom: 40px;
-        }
-
-        header h1 {
-            font-size: 42px;
-            color: #ff8fab;
-            margin: 0;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            animation: pulse 3s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.02); opacity: 0.8; }
-        }
-
-        .main-container {
-            width: 90%;
-            max-width: 1000px;
-        }
-
-        /* Modern Post Box */
-        .creator-container {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            border: 2px solid var(--soft-border);
-            box-shadow: 0 15px 50px rgba(0,0,0,0.03);
-            margin-bottom: 50px;
-        }
-
-        .field-label {
-            font-weight: 800;
-            color: #fb6f92;
-            margin-bottom: 8px;
-            display: block;
-            font-size: 14px;
-            text-transform: uppercase;
-        }
-
-        input[type="text"], textarea {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #f8f9fa;
-            border-radius: 12px;
-            background: #fdfdfd;
+        /* Top Navigation Bar */
+        .nav-bar {
+            background: var(--sakura-pink);
+            border-bottom: 1px solid var(--sakura-border);
+            padding: 5px;
             margin-bottom: 20px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            box-sizing: border-box;
+            text-align: center;
         }
 
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: var(--aura-pink);
-            background: white;
-            box-shadow: 0 0 15px var(--aura-glow);
-        }
-
-        /* Post Button */
-        .aura-btn {
-            background: linear-gradient(90deg, #ff8fab 0%, #fb6f92 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 50px;
-            font-size: 18px;
+        .nav-bar a {
+            color: var(--sakura-text);
+            text-decoration: none;
             font-weight: bold;
+            padding: 0 10px;
             cursor: pointer;
-            width: 100%;
-            transition: 0.4s;
-            text-transform: uppercase;
         }
 
-        .aura-btn:hover {
-            letter-spacing: 2px;
-            box-shadow: 0 10px 30px rgba(251, 111, 146, 0.4);
-            transform: translateY(-3px);
+        .nav-bar a:hover { text-decoration: underline; }
+
+        header { text-align: center; margin-bottom: 20px; }
+
+        h1 {
+            color: #d81b60;
+            font-size: 28px;
+            margin: 5px;
         }
 
-        /* Post Feed */
-        .post-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            border: 1px solid var(--soft-border);
-            animation: slideUp 0.6s ease forwards;
+        /* Post Creation Section */
+        #upload-section {
+            display: block;
+            background: var(--post-bg);
+            border: 1px solid var(--sakura-border);
+            width: fit-content;
+            margin: 0 auto 30px auto;
+            padding: 10px;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        .post-form-table td { padding: 2px; }
+
+        input, textarea {
+            border: 1px solid var(--sakura-border);
+            padding: 2px;
+        }
+
+        /* The Board Layout */
+        .board { margin-top: 20px; }
+
+        .post {
+            display: inline-block;
+            background: var(--post-bg);
+            border: 1px solid var(--sakura-border);
+            margin: 5px;
+            padding: 5px;
+            vertical-align: top;
+            width: 95%; /* Mobile friendly, Desktop clean */
+            max-width: 800px;
         }
 
         .post-header {
-            display: flex;
-            justify-content: space-between;
-            color: #ffb3c1;
-            font-weight: bold;
-            margin-bottom: 15px;
-            font-size: 13px;
+            font-size: 11px;
+            color: #555;
+            margin-bottom: 5px;
+            background: var(--sakura-pink);
+            padding: 3px;
         }
 
-        .post-user { color: #fb6f92; font-size: 16px; }
+        .poster-name { color: #117743; font-weight: bold; }
 
-        .post-body {
-            font-size: 17px;
-            line-height: 1.6;
-            color: #555;
+        /* Small Uniform Image System */
+        .img-container {
+            float: left;
+            margin: 5px 20px 5px 5px;
         }
 
         .post-image {
-            width: 100%;
-            border-radius: 12px;
-            margin-top: 20px;
-            border: 3px solid #fff0f3;
+            width: 150px; /* Small and uniform */
+            height: 150px;
+            object-fit: cover; /* Keeps them the same size without stretching */
+            border: 1px solid var(--sakura-border);
+            cursor: pointer;
         }
 
-        .stat-banner {
-            background: #fb6f92;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-size: 12px;
-            font-weight: bold;
-            display: inline-block;
+        .post-content {
+            font-size: 14px;
+            word-wrap: break-word;
+        }
+
+        .search-bar {
+            text-align: center;
             margin-bottom: 20px;
         }
+
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>AURA DOMINUS</h1>
-</header>
-
-<div class="main-container">
-    <div id="statBox" class="stat-banner">0 ACTIVE TRANSMISSIONS</div>
-
-    <div class="creator-container">
-        <span class="field-label">Codename</span>
-        <input type="text" id="nameInp" placeholder="Who is transmitting?">
-        
-        <span class="field-label">Data Stream</span>
-        <textarea id="msgInp" rows="4" placeholder="Type your message..."></textarea>
-        
-        <span class="field-label">Visual Upload</span>
-        <input type="file" id="imgInp" accept="image/*" style="margin-bottom: 20px;">
-        
-        <button class="aura-btn" onclick="publish()">Publish to Aura</button>
+    <div class="nav-bar">
+        [ <a onclick="showSection('home')">Home</a> / 
+        <a onclick="showSection('upload')">Upload</a> / 
+        <a onclick="showSection('recent')">Recent</a> / 
+        <a onclick="showSection('popular')">Popular</a> ]
     </div>
 
-    <div id="auraFeed"></div>
-</div>
+    <header>
+        <h1>4sakura</h1>
+        <div id="sub-title">/sakura/ - Dominus Aura Discussion</div>
+    </header>
 
-<script>
-    const auraFeed = document.getElementById('auraFeed');
-    const statBox = document.getElementById('statBox');
+    <div class="search-bar">
+        Search for post: <input type="text" id="searchInput" onkeyup="filterPosts()" placeholder="Type keywords...">
+    </div>
 
-    // Database Setup
-    let database = JSON.parse(localStorage.getItem('dominus_aura_v3')) || [];
+    <div id="upload-section" class="hidden">
+        <table class="post-form-table">
+            <tr>
+                <td><b>Name</b></td>
+                <td><input type="text" id="posterName" placeholder="Anonymous"></td>
+            </tr>
+            <tr>
+                <td><b>Subject</b></td>
+                <td><input type="text" id="postSubject" placeholder="Title"></td>
+            </tr>
+            <tr>
+                <td><b>Comment</b></td>
+                <td><textarea id="postComment" rows="4" cols="40"></textarea></td>
+            </tr>
+            <tr>
+                <td><b>File</b></td>
+                <td><input type="file" id="postFile" accept="image/*"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button onclick="submitPost()">Post</button></td>
+            </tr>
+        </table>
+    </div>
 
-    function updateView() {
-        auraFeed.innerHTML = '';
-        statBox.innerText = database.length + " ACTIVE TRANSMISSIONS";
+    <hr>
 
-        database.slice().reverse().forEach(p => {
-            const card = document.createElement('div');
-            card.className = 'post-card';
+    <div id="board" class="board">
+        </div>
+
+    <script>
+        let posts = JSON.parse(localStorage.getItem('4sakura_data')) || [];
+
+        function showSection(type) {
+            const uploadBox = document.getElementById('upload-section');
+            const boardTitle = document.getElementById('sub-title');
             
-            let imgTag = p.img ? `<img src="${p.img}" class="post-image">` : '';
+            uploadBox.classList.add('hidden');
+            
+            if (type === 'upload') {
+                uploadBox.classList.remove('hidden');
+                boardTitle.innerText = "Upload Data to the Board";
+            } else if (type === 'popular') {
+                boardTitle.innerText = "Most Popular Uploads (All Time)";
+                renderBoard(posts.slice().sort((a,b) => b.views - a.views));
+            } else if (type === 'recent') {
+                boardTitle.innerText = "Most Recent Posts";
+                renderBoard(posts);
+            } else {
+                boardTitle.innerText = "/sakura/ - Dominus Aura Discussion";
+                renderBoard(posts);
+            }
+        }
 
-            card.innerHTML = `
-                <div class="post-header">
-                    <span class="post-user">✨ ${p.user}</span>
-                    <span>${p.time}</span>
-                </div>
-                <div class="post-body">${p.text}</div>
-                ${imgTag}
-            `;
-            auraFeed.appendChild(card);
-        });
-    }
+        async function submitPost() {
+            const name = document.getElementById('posterName').value || "Anonymous";
+            const subject = document.getElementById('postSubject').value || "Untitled";
+            const comment = document.getElementById('postComment').value;
+            const file = document.getElementById('postFile').files[0];
 
-    async function publish() {
-        const name = document.getElementById('nameInp').value || "Aura Guest";
-        const text = document.getElementById('msgInp').value;
-        const file = document.getElementById('imgInp').files[0];
+            let imgData = "";
+            if (file) {
+                imgData = await new Promise(res => {
+                    const reader = new FileReader();
+                    reader.onload = () => res(reader.result);
+                    reader.readAsDataURL(file);
+                });
+            }
 
-        if (!text && !file) return alert("System requires data to transmit.");
+            const newPost = {
+                name: name,
+                subject: subject,
+                comment: comment,
+                img: imgData,
+                date: new Date().toLocaleString(),
+                views: Math.floor(Math.random() * 100), // Random popularity for demo
+                id: Date.now()
+            };
 
-        let imgData = null;
-        if (file) {
-            imgData = await new Promise((res) => {
-                const reader = new FileReader();
-                reader.onload = () => res(reader.result);
-                reader.readAsDataURL(file);
+            posts.unshift(newPost); // Add to top
+            localStorage.setItem('4sakura_data', JSON.stringify(posts));
+            document.getElementById('postComment').value = "";
+            document.getElementById('postFile').value = "";
+            showSection('home');
+        }
+
+        function filterPosts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = posts.filter(p => p.comment.toLowerCase().includes(query) || p.subject.toLowerCase().includes(query));
+            renderBoard(filtered);
+        }
+
+        function renderBoard(dataArray) {
+            const board = document.getElementById('board');
+            board.innerHTML = '';
+
+            dataArray.forEach(p => {
+                const imgHTML = p.img ? `<div class="img-container"><img class="post-image" src="${p.img}"></div>` : '';
+                
+                const postHTML = `
+                    <div class="post">
+                        <div class="post-header">
+                            <b>${p.subject}</b> 
+                            <span class="poster-name">${p.name}</span> 
+                            ${p.date} No.${p.id}
+                        </div>
+                        ${imgHTML}
+                        <div class="post-content">${p.comment}</div>
+                    </div>
+                    <br clear="left">
+                `;
+                board.innerHTML += postHTML;
             });
         }
 
-        const entry = {
-            user: name,
-            text: text,
-            img: imgData,
-            time: new Date().toLocaleTimeString()
-        };
-
-        database.push(entry);
-        localStorage.setItem('dominus_aura_v3', JSON.stringify(database));
-        
-        // Reset and Refresh
-        document.getElementById('nameInp').value = '';
-        document.getElementById('msgInp').value = '';
-        document.getElementById('imgInp').value = '';
-        updateView();
-    }
-
-    updateView();
-</script>
-
+        // Initialize
+        renderBoard(posts);
+    </script>
 </body>
 </html>
