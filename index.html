@@ -7,11 +7,14 @@
     <style>
         /* === VINTAGE WEB 1.0 AURA STYLING === */
         :root {
-            --bg-color: #FFFFEE; /* Classic old-web cream */
+            --bg-color: #FFFFEE;
             --header-red: #AF0A16;
             --post-bg: #F0E0D6;
+            --post-bg-hl: #F0C0B0;
             --name-color: #117743;
             --link-color: #0000EE;
+            --quote-green: #789922;
+            --border: #800000;
         }
 
         body {
@@ -22,40 +25,64 @@
             padding: 10px;
         }
 
+        a { color: var(--link-color); }
+        a:visited { color: #551A8B; }
+        a:hover { color: red; }
+
         /* Top Banner Navigation */
         .admin-nav {
             text-align: center;
             font-size: 14px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             border-bottom: 1px solid #CCC;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
         }
 
         .admin-nav a {
-            color: var(--link-color);
             text-decoration: none;
             font-weight: bold;
             padding: 0 5px;
+            cursor: pointer;
         }
 
-        .admin-nav a:hover { text-decoration: underline; color: red; }
+        .admin-nav a:hover { text-decoration: underline; }
+        .admin-nav a.active { color: var(--header-red); text-decoration: underline; }
 
-        header { text-align: center; margin-bottom: 20px; }
-        
+        header { text-align: center; margin-bottom: 10px; }
+
         header h1 {
             font-size: 36px;
             color: var(--header-red);
             margin: 0;
             text-decoration: underline;
+            letter-spacing: 1px;
         }
 
         .board-desc { font-style: italic; font-weight: bold; }
 
-        /* Classic 4chan Upload Table */
+        .stats-bar {
+            text-align: center;
+            font-size: 11px;
+            color: #555;
+            margin-bottom: 12px;
+        }
+
+        /* Search */
+        .search-row {
+            text-align: center;
+            margin-bottom: 12px;
+            font-size: 12px;
+        }
+        .search-row input[type="text"] {
+            width: 220px;
+            font-family: "Times New Roman", Times, serif;
+        }
+
+        /* Classic Upload Table */
         .post-form-area {
             display: flex;
             justify-content: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .post-table {
@@ -63,51 +90,34 @@
             border: 1px solid #777;
             padding: 5px;
             font-size: 13px;
+            border-collapse: collapse;
         }
 
-        .post-table td { padding: 2px; }
-        
+        .post-table td { padding: 3px; vertical-align: top; }
+
         .label-cell {
             background-color: #EEAA88;
             font-weight: bold;
-            padding-right: 10px;
+            padding: 3px 10px 3px 6px;
             border: 1px solid #777;
+            white-space: nowrap;
         }
 
-        input, textarea { border: 1px solid #999; }
-
-        /* The Posts */
-        .thread { margin-top: 20px; border-top: 1px solid #777; padding-top: 10px; }
-
-        .post {
-            display: table;
-            background-color: var(--post-bg);
-            border: 1px solid #777;
-            margin: 4px;
-            padding: 5px;
-            max-width: 90%;
+        input, textarea, button {
+            border: 1px solid #999;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 13px;
         }
 
-        .post-header { font-size: 12px; margin-bottom: 8px; }
-        .subject { color: #0F0C5D; font-weight: bold; }
-        .name { color: var(--name-color); font-weight: bold; }
-
-        /* Vintage Thumbnails */
-        .file-info { font-size: 11px; margin-bottom: 5px; }
-        .thumbnail-box { float: left; margin: 0 20px 5px 0; }
-        .thumbnail {
-            width: 150px;
-            height: 150px;
-            object-fit: contain; /* Classic non-cropped look */
-            border: 2px solid #777;
-            background: #FFF;
+        button {
+            background: #DDDDDD;
+            padding: 1px 8px;
+            cursor: pointer;
         }
+        button:hover { background: #EEEEEE; }
+        button:active { background: #CCCCCC; }
 
-        .comment { font-size: 14px; margin-left: 5px; line-height: 1.3; }
-
-        .hidden { display: none; }
-        
-        /* Interactive Section Banner */
+        /* Section banner */
         #section-indicator {
             text-align: center;
             background: var(--header-red);
@@ -115,16 +125,110 @@
             font-weight: bold;
             padding: 5px;
             margin: 10px 0;
+            letter-spacing: 1px;
+        }
+
+        /* The Posts */
+        #board { margin-top: 10px; }
+
+        .post {
+            display: table;
+            background-color: var(--post-bg);
+            border: 1px solid #777;
+            margin: 2px 0 4px 4px;
+            padding: 5px 8px 5px 5px;
+            max-width: 95%;
+        }
+        .post.highlight { background-color: var(--post-bg-hl); }
+
+        .post-header { font-size: 12px; margin-bottom: 6px; }
+        .subject { color: #0F0C5D; font-weight: bold; }
+        .name { color: var(--name-color); font-weight: bold; }
+        .post-no { color: #000; }
+        .post-no a { text-decoration: none; color: #000; }
+        .post-no a:hover { color: red; }
+        .post-actions { font-size: 11px; margin-left: 8px; }
+        .post-actions a { cursor: pointer; text-decoration: none; }
+        .post-actions a:hover { text-decoration: underline; }
+
+        /* Thumbnails */
+        .file-info { font-size: 11px; margin-bottom: 5px; }
+        .thumbnail-box { float: left; margin: 0 20px 5px 0; }
+        .thumbnail {
+            max-width: 150px;
+            max-height: 150px;
+            object-fit: contain;
+            border: 1px solid #777;
+            background: #FFF;
+            cursor: pointer;
+            display: block;
+        }
+        .thumbnail.expanded {
+            max-width: 100%;
+            max-height: none;
+        }
+
+        .comment {
+            font-size: 14px;
+            margin-left: 5px;
+            line-height: 1.35;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .quote { color: var(--quote-green); }
+        .postref {
+            color: var(--link-color);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .postref:hover { color: red; }
+
+        .empty-state {
+            text-align: center;
+            font-style: italic;
+            color: #777;
+            padding: 30px;
+            font-size: 14px;
+        }
+
+        .hidden { display: none; }
+
+        /* Reply form (smaller variant) */
+        .reply-target {
+            text-align: center;
+            font-size: 12px;
+            margin-bottom: 6px;
+            font-style: italic;
+        }
+        .reply-target a { cursor: pointer; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            font-size: 11px;
+            margin-top: 30px;
+            padding-top: 10px;
+            border-top: 1px solid #CCC;
+            color: #777;
+        }
+
+        /* Top/bottom links */
+        .page-jump {
+            text-align: center;
+            margin: 12px 0;
+            font-size: 12px;
         }
     </style>
 </head>
-<body>
+<body id="top">
 
     <div class="admin-nav">
-        [ <a href="javascript:void(0)" onclick="loadPosts('home')">Home</a> / 
-        <a href="javascript:void(0)" onclick="toggleUpload()">Post</a> / 
-        <a href="javascript:void(0)" onclick="loadPosts('popular')">Popular</a> / 
-        <a href="javascript:void(0)" onclick="loadPosts('recent')">Recent</a> ]
+        [ <a data-mode="home" onclick="loadPosts('home')">Home</a> /
+        <a onclick="toggleUpload()">Post</a> /
+        <a data-mode="popular" onclick="loadPosts('popular')">Popular</a> /
+        <a data-mode="recent" onclick="loadPosts('recent')">Recent</a> /
+        <a data-mode="images" onclick="loadPosts('images')">Images</a> ]
     </div>
 
     <header>
@@ -132,21 +236,35 @@
         <div class="board-desc">/sakura/ - The Aura Dominus Archive</div>
     </header>
 
+    <div class="stats-bar" id="stats-bar">0 transmissions archived</div>
+
     <div id="section-indicator">MODE: HOME (ALL TRANSMISSIONS)</div>
+
+    <div class="search-row">
+        Search: <input type="text" id="searchBox" placeholder="filter by name, subject, or text" oninput="loadPosts(currentMode)">
+        <a onclick="document.getElementById('searchBox').value=''; loadPosts(currentMode)">[clear]</a>
+    </div>
 
     <div id="upload-box" class="post-form-area hidden">
         <table class="post-table">
+            <tr id="reply-row" class="hidden">
+                <td class="label-cell">Reply To</td>
+                <td>
+                    <span id="reply-target-display"></span>
+                    <a onclick="cancelReply()" style="cursor:pointer;color:var(--link-color);">[cancel]</a>
+                </td>
+            </tr>
             <tr>
                 <td class="label-cell">Name</td>
-                <td><input type="text" id="pName" placeholder="Anonymous"></td>
+                <td><input type="text" id="pName" placeholder="Anonymous" maxlength="40"></td>
             </tr>
             <tr>
                 <td class="label-cell">Subject</td>
-                <td><input type="text" id="pSubj" placeholder="Title"></td>
+                <td><input type="text" id="pSubj" placeholder="Title" maxlength="80"></td>
             </tr>
             <tr>
                 <td class="label-cell">Comment</td>
-                <td><textarea id="pComm" rows="4" cols="35"></textarea></td>
+                <td><textarea id="pComm" rows="5" cols="38" maxlength="2000" placeholder="Lines starting with > render as quotes. Use &gt;&gt;ID to reply."></textarea></td>
             </tr>
             <tr>
                 <td class="label-cell">File</td>
@@ -154,35 +272,140 @@
             </tr>
             <tr>
                 <td></td>
-                <td><button onclick="postData()">Submit</button></td>
+                <td>
+                    <button onclick="postData()">Submit</button>
+                    <button onclick="toggleUpload()">Cancel</button>
+                </td>
             </tr>
         </table>
     </div>
 
-    <div id="board" class="thread">
-        </div>
+    <div class="page-jump">[ <a href="#bottom">Bottom</a> ]</div>
+
+    <div id="board"></div>
+
+    <div class="page-jump" id="bottom">[ <a href="#top">Top</a> ]</div>
+
+    <footer>
+        4sakura &mdash; classic edition. Posts are stored locally in your browser.
+    </footer>
 
     <script>
         /* === 4SAKURA VINTAGE ENGINE === */
-        let archive = JSON.parse(localStorage.getItem('4sakura_classic_v1')) || [];
+        const STORAGE_KEY = '4sakura_classic_v1';
+        let archive = [];
+        try { archive = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch(e) { archive = []; }
 
-        function toggleUpload() {
-            document.getElementById('upload-box').classList.toggle('hidden');
+        let currentMode = 'home';
+        let replyTo = null;
+
+        function escapeHTML(str) {
+            return String(str).replace(/[&<>"']/g, c => ({
+                '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+            })[c]);
         }
 
-        function setIndicator(text) {
-            document.getElementById('section-indicator').innerText = "MODE: " + text.toUpperCase();
+        function formatComment(text) {
+            const escaped = escapeHTML(text || '');
+            return escaped.split('\n').map(line => {
+                let l = line.replace(/&gt;&gt;(\d+)/g,
+                    (_, id) => `<a class="postref" onclick="jumpTo(${id})">&gt;&gt;${id}</a>`);
+                if (line.startsWith('&gt;') && !line.startsWith('&gt;&gt;')) {
+                    return `<span class="quote">${l}</span>`;
+                }
+                return l;
+            }).join('\n');
+        }
+
+        function save() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(archive));
+        }
+
+        function updateStats() {
+            const total = archive.length;
+            const withImg = archive.filter(p => p.img).length;
+            document.getElementById('stats-bar').innerText =
+                `${total} transmission${total===1?'':'s'} archived — ${withImg} with attached file${withImg===1?'':'s'}`;
+        }
+
+        function toggleUpload() {
+            const box = document.getElementById('upload-box');
+            box.classList.toggle('hidden');
+            if (!box.classList.contains('hidden')) {
+                document.getElementById('pComm').focus();
+            }
+        }
+
+        function setIndicator(mode) {
+            const labels = {
+                home: 'HOME (ALL TRANSMISSIONS)',
+                popular: 'POPULAR (BY VIEW COUNT)',
+                recent: 'RECENT (NEWEST FIRST)',
+                images: 'IMAGES ONLY'
+            };
+            document.getElementById('section-indicator').innerText = 'MODE: ' + (labels[mode] || mode.toUpperCase());
+            document.querySelectorAll('.admin-nav a').forEach(a => {
+                a.classList.toggle('active', a.dataset.mode === mode);
+            });
+        }
+
+        function replyToPost(id) {
+            replyTo = id;
+            document.getElementById('reply-row').classList.remove('hidden');
+            document.getElementById('reply-target-display').innerText = 'No.' + id;
+            const box = document.getElementById('upload-box');
+            if (box.classList.contains('hidden')) toggleUpload();
+            const comm = document.getElementById('pComm');
+            comm.value = `>>${id}\n` + comm.value;
+            comm.focus();
+            comm.setSelectionRange(comm.value.length, comm.value.length);
+        }
+
+        function cancelReply() {
+            replyTo = null;
+            document.getElementById('reply-row').classList.add('hidden');
+        }
+
+        function jumpTo(id) {
+            const el = document.getElementById('post-' + id);
+            if (!el) { alert('Post No.' + id + ' not found in archive.'); return; }
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            el.classList.add('highlight');
+            setTimeout(() => el.classList.remove('highlight'), 1500);
+        }
+
+        function deletePost(id) {
+            if (!confirm('Delete post No.' + id + '?')) return;
+            archive = archive.filter(p => p.id !== id);
+            save();
+            loadPosts(currentMode);
+        }
+
+        function bumpClicks(id) {
+            const p = archive.find(x => x.id === id);
+            if (p) { p.clicks = (p.clicks || 0) + 1; save(); }
+        }
+
+        function toggleImage(ev, id) {
+            const img = ev.currentTarget;
+            img.classList.toggle('expanded');
+            bumpClicks(id);
         }
 
         async function postData() {
-            const name = document.getElementById('pName').value || "Anonymous";
-            const subj = document.getElementById('pSubj').value || "Untitled";
-            const comm = document.getElementById('pComm').value;
+            const name = document.getElementById('pName').value.trim() || 'Anonymous';
+            const subj = document.getElementById('pSubj').value.trim() || 'Untitled';
+            const comm = document.getElementById('pComm').value.trim();
             const file = document.getElementById('pFile').files[0];
 
-            if(!comm && !file) return alert("System requires input.");
+            if (!comm && !file) { alert('System requires text or a file.'); return; }
 
-            let b64 = "";
+            if (file && file.size > 5 * 1024 * 1024) {
+                alert('File too large. 5MB max.');
+                return;
+            }
+
+            let b64 = '';
             if (file) {
                 b64 = await new Promise(r => {
                     const reader = new FileReader();
@@ -192,59 +415,104 @@
             }
 
             const newEntry = {
-                id: Math.floor(Math.random() * 9999999),
-                name: name,
-                subj: subj,
-                comm: comm,
+                id: Date.now() % 10000000,
+                name, subj, comm,
                 img: b64,
+                fileName: file ? file.name : '',
+                fileSize: file ? file.size : 0,
                 time: new Date().toLocaleString(),
-                clicks: Math.floor(Math.random() * 50)
+                clicks: 0,
+                replyTo: replyTo
             };
 
             archive.unshift(newEntry);
-            localStorage.setItem('4sakura_classic_v1', JSON.stringify(archive));
-            
-            // UI Reset
+            save();
+
             document.getElementById('pComm').value = '';
+            document.getElementById('pSubj').value = '';
             document.getElementById('pFile').value = '';
+            cancelReply();
             toggleUpload();
-            loadPosts('home');
+            loadPosts('recent');
+            setTimeout(() => jumpTo(newEntry.id), 50);
+        }
+
+        function formatSize(bytes) {
+            if (!bytes) return '';
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes/1024).toFixed(1) + ' KB';
+            return (bytes/1024/1024).toFixed(2) + ' MB';
         }
 
         function loadPosts(mode) {
+            currentMode = mode;
             const board = document.getElementById('board');
-            board.innerHTML = '';
             setIndicator(mode);
+            updateStats();
 
-            let dataToRender = [...archive];
+            let data = [...archive];
 
-            if (mode === 'popular') {
-                dataToRender.sort((a, b) => b.clicks - a.clicks);
-            } else if (mode === 'recent') {
-                // Already sorted by unshift
+            if (mode === 'popular') data.sort((a, b) => (b.clicks||0) - (a.clicks||0));
+            else if (mode === 'images') data = data.filter(p => p.img);
+
+            const q = (document.getElementById('searchBox').value || '').toLowerCase().trim();
+            if (q) {
+                data = data.filter(p =>
+                    (p.name||'').toLowerCase().includes(q) ||
+                    (p.subj||'').toLowerCase().includes(q) ||
+                    (p.comm||'').toLowerCase().includes(q));
             }
 
-            dataToRender.forEach(p => {
+            if (data.length === 0) {
+                board.innerHTML = `<div class="empty-state">
+                    ${q ? 'No transmissions match your filter.' :
+                          'The archive is empty. Click [Post] to begin transmission.'}
+                </div>`;
+                return;
+            }
+
+            board.innerHTML = data.map(p => {
+                const safeName = escapeHTML(p.name);
+                const safeSubj = escapeHTML(p.subj);
+                const safeFileName = escapeHTML(p.fileName || `sakura_capture_${p.id}.png`);
+                const replyLine = p.replyTo
+                    ? `<div class="reply-target">in reply to <a class="postref" onclick="jumpTo(${p.replyTo})">&gt;&gt;${p.replyTo}</a></div>`
+                    : '';
                 const imgHTML = p.img ? `
                     <div class="thumbnail-box">
-                        <div class="file-info">File: sakura_capture_${p.id}.png</div>
-                        <img src="${p.img}" class="thumbnail">
+                        <div class="file-info">File: ${safeFileName}${p.fileSize ? ' (' + formatSize(p.fileSize) + ')' : ''}</div>
+                        <img src="${p.img}" class="thumbnail" alt="attachment" onclick="toggleImage(event, ${p.id})">
                     </div>` : '';
-                
-                board.innerHTML += `
-                    <div class="post">
+
+                return `
+                    <div class="post" id="post-${p.id}">
+                        ${replyLine}
                         <div class="post-header">
-                            <span class="subject">${p.subj}</span> 
-                            File: <span class="name">${p.name}</span> 
-                            ${p.time} No.${p.id}
+                            <span class="subject">${safeSubj}</span>
+                            <span class="name">${safeName}</span>
+                            ${escapeHTML(p.time)}
+                            <span class="post-no">No.<a onclick="replyToPost(${p.id})">${p.id}</a></span>
+                            <span class="post-actions">
+                                [<a onclick="replyToPost(${p.id})">reply</a>]
+                                [<a onclick="deletePost(${p.id})">delete</a>]
+                                ${p.clicks ? `<span style="color:#777;"> &middot; ${p.clicks} view${p.clicks===1?'':'s'}</span>` : ''}
+                            </span>
                         </div>
                         ${imgHTML}
-                        <div class="comment">${p.comm}</div>
+                        <div class="comment">${formatComment(p.comm)}</div>
                     </div>
                     <br clear="left">
                 `;
-            });
+            }).join('');
         }
+
+        // Keyboard: Esc closes upload box
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const box = document.getElementById('upload-box');
+                if (!box.classList.contains('hidden')) toggleUpload();
+            }
+        });
 
         // Initial Boot
         loadPosts('home');
