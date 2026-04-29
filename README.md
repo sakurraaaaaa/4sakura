@@ -8,8 +8,8 @@
 
 ### 🛡️ SYSTEM STATUS
 - **OS:** Windows / Linux / MacOS
-- **CORE:** 3.9GHz High-Performance Setup
-- **DEVELOPER:** [YOUR NAME]
+- **CORE:** sigma
+- **DEVELOPER:** [diddy]
 - **CLAN:** Blackbird Clan
 
 ---
