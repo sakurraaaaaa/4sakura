@@ -3,277 +3,256 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dominus Aura // Community Board</title>
+    <title>Aura Board // Elite Edition</title>
     <style>
-        /* === THE AURA DESIGN (CSS) === */
+        /* === THE AURA THEME === */
         :root {
-            --primary-pink: #ffafcc;
-            --soft-pink: #fde2e4;
-            --accent-glow: #ffc8dd;
-            --text-main: #5c5c5c;
-            --white: #ffffff;
+            --aura-pink: #ffc2d1;
+            --aura-white: #ffffff;
+            --aura-glow: rgba(255, 182, 193, 0.5);
+            --text-dark: #4a4a4a;
+            --soft-border: #ffe5ec;
         }
 
         body {
-            background-color: #fff5f6;
-            background-image: linear-gradient(135deg, #fff5f6 0%, #fde2e4 100%);
-            color: var(--text-main);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(180deg, #ffffff 0%, #fff0f3 100%);
+            color: var(--text-dark);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             margin: 0;
             padding: 0;
-            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Header / Logo Area */
+        /* Animated Header */
         header {
-            background: var(--white);
-            padding: 30px;
+            width: 100%;
+            padding: 50px 0;
+            background: var(--aura-white);
             text-align: center;
-            border-bottom: 4px solid var(--primary-pink);
-            box-shadow: 0 4px 15px rgba(255, 175, 204, 0.3);
-        }
-
-        h1 {
-            margin: 0;
-            color: #ff85a1;
-            font-size: 32px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-shadow: 2px 2px 0px var(--soft-pink);
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        /* Posting Box */
-        .post-box {
-            background: var(--white);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-bottom: 5px solid var(--aura-pink);
+            box-shadow: 0 10px 40px var(--aura-glow);
             margin-bottom: 40px;
-            border: 1px solid var(--soft-pink);
         }
 
-        .input-group { margin-bottom: 15px; }
+        header h1 {
+            font-size: 42px;
+            color: #ff8fab;
+            margin: 0;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            animation: pulse 3s infinite ease-in-out;
+        }
 
-        label {
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.02); opacity: 0.8; }
+        }
+
+        .main-container {
+            width: 90%;
+            max-width: 1000px;
+        }
+
+        /* Modern Post Box */
+        .creator-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            border: 2px solid var(--soft-border);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.03);
+            margin-bottom: 50px;
+        }
+
+        .field-label {
+            font-weight: 800;
+            color: #fb6f92;
+            margin-bottom: 8px;
             display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #ff85a1;
+            font-size: 14px;
+            text-transform: uppercase;
         }
 
         input[type="text"], textarea {
             width: 100%;
-            padding: 12px;
-            border: 2px solid var(--soft-pink);
-            border-radius: 8px;
+            padding: 15px;
+            border: 2px solid #f8f9fa;
+            border-radius: 12px;
+            background: #fdfdfd;
+            margin-bottom: 20px;
+            font-size: 16px;
+            transition: all 0.3s ease;
             box-sizing: border-box;
-            font-size: 14px;
-            transition: 0.3s;
         }
 
         input:focus, textarea:focus {
             outline: none;
-            border-color: var(--primary-pink);
-            background: #fff;
+            border-color: var(--aura-pink);
+            background: white;
+            box-shadow: 0 0 15px var(--aura-glow);
         }
 
-        /* Custom File Upload */
-        .file-upload {
-            background: var(--soft-pink);
-            padding: 10px;
-            border-radius: 8px;
-            display: inline-block;
-            cursor: pointer;
-            color: #ff85a1;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        button {
-            background: var(--primary-pink);
+        /* Post Button */
+        .aura-btn {
+            background: linear-gradient(90deg, #ff8fab 0%, #fb6f92 100%);
             color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 18px;
             font-weight: bold;
-            font-size: 16px;
             cursor: pointer;
-            transition: 0.3s;
-            display: block;
             width: 100%;
+            transition: 0.4s;
+            text-transform: uppercase;
         }
 
-        button:hover {
-            background: #ff85a1;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 133, 161, 0.4);
+        .aura-btn:hover {
+            letter-spacing: 2px;
+            box-shadow: 0 10px 30px rgba(251, 111, 146, 0.4);
+            transform: translateY(-3px);
         }
 
-        /* Stats bar */
-        .stats {
-            text-align: center;
-            font-weight: bold;
-            color: #ff85a1;
-            margin-bottom: 20px;
-        }
-
-        /* THE FEED */
-        .feed { display: grid; gap: 20px; }
-
-        .post {
+        /* Post Feed */
+        .post-card {
             background: white;
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid var(--soft-pink);
-            transition: 0.3s;
-            animation: fadeIn 0.5s ease;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid var(--soft-border);
+            animation: slideUp 0.6s ease forwards;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .post-meta {
-            font-size: 12px;
-            color: #bbb;
-            margin-bottom: 10px;
+        .post-header {
             display: flex;
             justify-content: space-between;
+            color: #ffb3c1;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 13px;
         }
 
-        .post-user { color: #ff85a1; font-weight: bold; font-size: 14px; }
+        .post-user { color: #fb6f92; font-size: 16px; }
 
-        .post-body { font-size: 15px; line-height: 1.6; }
-
-        .uploaded-img {
-            max-width: 100%;
-            border-radius: 8px;
-            margin-top: 15px;
-            display: block;
-            border: 2px solid var(--soft-pink);
+        .post-body {
+            font-size: 17px;
+            line-height: 1.6;
+            color: #555;
         }
 
-        /* Scrollbar fix */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--white); }
-        ::-webkit-scrollbar-thumb { background: var(--primary-pink); border-radius: 10px; }
+        .post-image {
+            width: 100%;
+            border-radius: 12px;
+            margin-top: 20px;
+            border: 3px solid #fff0f3;
+        }
+
+        .stat-banner {
+            background: #fb6f92;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>✨ Dominus Aura Board ✨</h1>
+    <h1>AURA DOMINUS</h1>
 </header>
 
-<div class="container">
-    <div class="stats" id="activeCounter">0 TRANSMISSIONS LOGGED</div>
+<div class="main-container">
+    <div id="statBox" class="stat-banner">0 ACTIVE TRANSMISSIONS</div>
 
-    <div class="post-box">
-        <div class="input-group">
-            <label>Username</label>
-            <input type="text" id="userInput" placeholder="Enter your display name...">
-        </div>
-        <div class="input-group">
-            <label>Message</label>
-            <textarea id="msgInput" rows="3" placeholder="Share your thoughts..."></textarea>
-        </div>
-        <div class="input-group">
-            <label>Image Attachment</label>
-            <input type="file" id="fileInput" accept="image/*">
-        </div>
-        <button onclick="createPost()">POST TO AURA</button>
+    <div class="creator-container">
+        <span class="field-label">Codename</span>
+        <input type="text" id="nameInp" placeholder="Who is transmitting?">
+        
+        <span class="field-label">Data Stream</span>
+        <textarea id="msgInp" rows="4" placeholder="Type your message..."></textarea>
+        
+        <span class="field-label">Visual Upload</span>
+        <input type="file" id="imgInp" accept="image/*" style="margin-bottom: 20px;">
+        
+        <button class="aura-btn" onclick="publish()">Publish to Aura</button>
     </div>
 
-    <div id="feed" class="feed">
-        </div>
+    <div id="auraFeed"></div>
 </div>
 
 <script>
-    /* === AURA ENGINE (JS) === */
-    const feed = document.getElementById('feed');
-    const counter = document.getElementById('activeCounter');
-    
-    // Load existing posts
-    let auraPosts = JSON.parse(localStorage.getItem('aura_board_v2')) || [];
+    const auraFeed = document.getElementById('auraFeed');
+    const statBox = document.getElementById('statBox');
 
-    function savePosts() {
-        localStorage.setItem('aura_board_v2', JSON.stringify(auraPosts));
-    }
+    // Database Setup
+    let database = JSON.parse(localStorage.getItem('dominus_aura_v3')) || [];
 
-    function renderFeed() {
-        feed.innerHTML = '';
-        counter.innerText = auraPosts.length + " TRANSMISSIONS LOGGED";
+    function updateView() {
+        auraFeed.innerHTML = '';
+        statBox.innerText = database.length + " ACTIVE TRANSMISSIONS";
 
-        auraPosts.slice().reverse().forEach(post => {
-            const postCard = document.createElement('div');
-            postCard.className = 'post';
+        database.slice().reverse().forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'post-card';
             
-            let imgHTML = post.image ? `<img src="${post.image}" class="uploaded-img">` : '';
+            let imgTag = p.img ? `<img src="${p.img}" class="post-image">` : '';
 
-            postCard.innerHTML = `
-                <div class="post-meta">
-                    <span class="post-user">${post.user}</span>
-                    <span>${post.date}</span>
+            card.innerHTML = `
+                <div class="post-header">
+                    <span class="post-user">✨ ${p.user}</span>
+                    <span>${p.time}</span>
                 </div>
-                <div class="post-body">
-                    ${post.text}
-                </div>
-                ${imgHTML}
+                <div class="post-body">${p.text}</div>
+                ${imgTag}
             `;
-            feed.appendChild(postCard);
+            auraFeed.appendChild(card);
         });
     }
 
-    async function createPost() {
-        const user = document.getElementById('userInput').value || "Anonymous Guest";
-        const text = document.getElementById('msgInput').value;
-        const file = document.getElementById('fileInput').files[0];
+    async function publish() {
+        const name = document.getElementById('nameInp').value || "Aura Guest";
+        const text = document.getElementById('msgInp').value;
+        const file = document.getElementById('imgInp').files[0];
 
-        if (!text && !file) {
-            alert("Please add some text or an image!");
-            return;
-        }
+        if (!text && !file) return alert("System requires data to transmit.");
 
-        let base64Image = null;
+        let imgData = null;
         if (file) {
-            base64Image = await convertToBase64(file);
+            imgData = await new Promise((res) => {
+                const reader = new FileReader();
+                reader.onload = () => res(reader.result);
+                reader.readAsDataURL(file);
+            });
         }
 
-        const newPost = {
-            user: user,
+        const entry = {
+            user: name,
             text: text,
-            image: base64Image,
-            date: new Date().toLocaleString()
+            img: imgData,
+            time: new Date().toLocaleTimeString()
         };
 
-        auraPosts.push(newPost);
-        savePosts();
-        renderFeed();
-
-        // Clear Inputs
-        document.getElementById('userInput').value = '';
-        document.getElementById('msgInput').value = '';
-        document.getElementById('fileInput').value = '';
+        database.push(entry);
+        localStorage.setItem('dominus_aura_v3', JSON.stringify(database));
+        
+        // Reset and Refresh
+        document.getElementById('nameInp').value = '';
+        document.getElementById('msgInp').value = '';
+        document.getElementById('imgInp').value = '';
+        updateView();
     }
 
-    function convertToBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-    }
-
-    // Initialize
-    renderFeed();
+    updateView();
 </script>
 
 </body>
