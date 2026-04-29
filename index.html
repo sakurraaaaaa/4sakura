@@ -1,521 +1,1254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>/sakura/ - 4sakura Classic</title>
-    <style>
-        /* === VINTAGE WEB 1.0 AURA STYLING === */
-        :root {
-            --bg-color: #FFFFEE;
-            --header-red: #AF0A16;
-            --post-bg: #F0E0D6;
-            --post-bg-hl: #F0C0B0;
-            --name-color: #117743;
-            --link-color: #0000EE;
-            --quote-green: #789922;
-            --border: #800000;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tuff // roblox exploit & luau academy</title>
+<style>
+:root {
+    --bg: #07090d;
+    --bg-2: #0d1117;
+    --panel: #11161f;
+    --panel-2: #161c27;
+    --line: #1f2735;
+    --ink: #d7dde6;
+    --dim: #7a8597;
+    --accent: #00ff9c;
+    --accent-2: #ff2e63;
+    --warn: #ffcc33;
+    --blue: #5cc8ff;
+    --purple: #b388ff;
+    --mono: ui-monospace, "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+}
 
-        body {
-            background-color: var(--bg-color);
-            color: #800000;
-            font-family: "Times New Roman", Times, serif;
-            margin: 0;
-            padding: 10px;
-        }
+* { box-sizing: border-box; }
 
-        a { color: var(--link-color); }
-        a:visited { color: #551A8B; }
-        a:hover { color: red; }
+html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.55;
+    min-height: 100%;
+}
 
-        /* Top Banner Navigation */
-        .admin-nav {
-            text-align: center;
-            font-size: 14px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #CCC;
-            padding-bottom: 8px;
-        }
+body {
+    background-image:
+        radial-gradient(ellipse at 20% -10%, rgba(0,255,156,.08), transparent 60%),
+        radial-gradient(ellipse at 90% 0%, rgba(255,46,99,.07), transparent 55%),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0 1px, transparent 1px 3px);
+}
 
-        .admin-nav a {
-            text-decoration: none;
-            font-weight: bold;
-            padding: 0 5px;
-            cursor: pointer;
-        }
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: #fff; }
 
-        .admin-nav a:hover { text-decoration: underline; }
-        .admin-nav a.active { color: var(--header-red); text-decoration: underline; }
+::selection { background: var(--accent); color: #000; }
 
-        header { text-align: center; margin-bottom: 10px; }
+/* === TOP BAR === */
+.topbar {
+    border-bottom: 1px solid var(--line);
+    background: rgba(7,9,13,.85);
+    backdrop-filter: blur(8px);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+.topbar-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+.brand {
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -.5px;
+    color: #fff;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+.brand .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+    box-shadow: 0 0 12px var(--accent);
+    animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .4; transform: scale(.85); }
+}
+.brand .tld { color: var(--accent); font-weight: 400; }
 
-        header h1 {
-            font-size: 36px;
-            color: var(--header-red);
-            margin: 0;
-            text-decoration: underline;
-            letter-spacing: 1px;
-        }
+.nav {
+    display: flex;
+    gap: 4px;
+    margin-left: auto;
+    flex-wrap: wrap;
+}
+.nav a {
+    color: var(--dim);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all .15s;
+    border: 1px solid transparent;
+}
+.nav a:hover { color: #fff; background: var(--panel); }
+.nav a.active {
+    color: var(--accent);
+    border-color: var(--line);
+    background: var(--panel);
+}
 
-        .board-desc { font-style: italic; font-weight: bold; }
+/* === LAYOUT === */
+.wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 32px 22px 80px;
+}
 
-        .stats-bar {
-            text-align: center;
-            font-size: 11px;
-            color: #555;
-            margin-bottom: 12px;
-        }
+.section { display: none; }
+.section.active { display: block; animation: fade .25s ease; }
+@keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; } }
 
-        /* Search */
-        .search-row {
-            text-align: center;
-            margin-bottom: 12px;
-            font-size: 12px;
-        }
-        .search-row input[type="text"] {
-            width: 220px;
-            font-family: "Times New Roman", Times, serif;
-        }
+/* === HERO === */
+.hero {
+    border: 1px solid var(--line);
+    background: linear-gradient(135deg, rgba(0,255,156,.04), rgba(255,46,99,.03));
+    padding: 42px 36px;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        repeating-linear-gradient(90deg, rgba(0,255,156,.04) 0 1px, transparent 1px 40px),
+        repeating-linear-gradient(0deg, rgba(0,255,156,.04) 0 1px, transparent 1px 40px);
+    pointer-events: none;
+}
+.hero-tag {
+    display: inline-block;
+    color: var(--accent);
+    font-size: 11px;
+    letter-spacing: 3px;
+    margin-bottom: 14px;
+    padding: 4px 10px;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    background: rgba(0,255,156,.06);
+}
+.hero h1 {
+    font-size: 52px;
+    margin: 0 0 12px;
+    color: #fff;
+    letter-spacing: -2px;
+    line-height: 1;
+}
+.hero h1 span { color: var(--accent); }
+.hero p.lede {
+    font-size: 16px;
+    color: var(--dim);
+    max-width: 620px;
+    margin: 0 0 26px;
+    line-height: 1.6;
+}
+.hero-cta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.btn {
+    display: inline-block;
+    padding: 11px 20px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--ink);
+    border-radius: 6px;
+    font-family: var(--mono);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all .15s;
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn.primary {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+    font-weight: 700;
+}
+.btn.primary:hover { background: #fff; border-color: #fff; color: #000; }
 
-        /* Classic Upload Table */
-        .post-form-area {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
+/* === STAT CARDS === */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-top: 24px;
+}
+.stat {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    padding: 18px;
+    border-radius: 10px;
+}
+.stat-label {
+    font-size: 11px;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+.stat-val {
+    font-size: 28px;
+    color: #fff;
+    font-weight: 700;
+}
+.stat-val.up { color: var(--accent); }
+.stat-val.down { color: var(--accent-2); }
 
-        .post-table {
-            background-color: var(--post-bg);
-            border: 1px solid #777;
-            padding: 5px;
-            font-size: 13px;
-            border-collapse: collapse;
-        }
+/* === GRID === */
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 24px;
+}
+@media (max-width: 720px) { .grid-2 { grid-template-columns: 1fr; } }
 
-        .post-table td { padding: 3px; vertical-align: top; }
+.card {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    border-radius: 10px;
+    padding: 22px;
+}
+.card h3 {
+    margin: 0 0 10px;
+    color: #fff;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.card h3::before {
+    content: ">";
+    color: var(--accent);
+}
+.card p { color: var(--dim); margin: 0 0 6px; }
 
-        .label-cell {
-            background-color: #EEAA88;
-            font-weight: bold;
-            padding: 3px 10px 3px 6px;
-            border: 1px solid #777;
-            white-space: nowrap;
-        }
+/* === SECTION HEADER === */
+.section-head {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+}
+.section-head h2 {
+    font-size: 30px;
+    color: #fff;
+    margin: 0 0 6px;
+    letter-spacing: -1px;
+}
+.section-head h2::before {
+    content: "// ";
+    color: var(--accent);
+}
+.section-head p {
+    color: var(--dim);
+    margin: 0;
+    max-width: 700px;
+}
 
-        input, textarea, button {
-            border: 1px solid #999;
-            font-family: "Times New Roman", Times, serif;
-            font-size: 13px;
-        }
+/* === LESSON STYLE === */
+.lessons {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 20px;
+}
+@media (max-width: 820px) { .lessons { grid-template-columns: 1fr; } }
 
-        button {
-            background: #DDDDDD;
-            padding: 1px 8px;
-            cursor: pointer;
-        }
-        button:hover { background: #EEEEEE; }
-        button:active { background: #CCCCCC; }
+.lesson-list {
+    list-style: none;
+    margin: 0;
+    padding: 8px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    border-radius: 10px;
+    height: fit-content;
+    position: sticky;
+    top: 80px;
+}
+.lesson-list li {
+    padding: 9px 12px;
+    cursor: pointer;
+    color: var(--dim);
+    border-radius: 6px;
+    font-size: 13px;
+    border-left: 2px solid transparent;
+}
+.lesson-list li:hover { color: #fff; background: var(--panel-2); }
+.lesson-list li.active {
+    color: var(--accent);
+    background: var(--panel-2);
+    border-left-color: var(--accent);
+}
+.lesson-list .group-label {
+    color: var(--dim);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 14px 12px 6px;
+    cursor: default;
+    border-left: none;
+}
+.lesson-list .group-label:hover { background: transparent; color: var(--dim); }
 
-        /* Section banner */
-        #section-indicator {
-            text-align: center;
-            background: var(--header-red);
-            color: white;
-            font-weight: bold;
-            padding: 5px;
-            margin: 10px 0;
-            letter-spacing: 1px;
-        }
+.lesson-body {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    border-radius: 10px;
+    padding: 30px 32px;
+    min-height: 400px;
+}
+.lesson-body h2 {
+    margin: 0 0 6px;
+    color: #fff;
+    font-size: 24px;
+    letter-spacing: -.5px;
+}
+.lesson-body .breadcrumb {
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 18px;
+}
+.lesson-body p { color: #c0c8d4; }
+.lesson-body h4 {
+    color: #fff;
+    margin: 28px 0 8px;
+    font-size: 15px;
+    border-left: 3px solid var(--accent);
+    padding-left: 10px;
+}
 
-        /* The Posts */
-        #board { margin-top: 10px; }
+/* === CODE === */
+pre {
+    background: #05070b;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px 18px;
+    overflow-x: auto;
+    margin: 12px 0;
+    font-size: 13px;
+    line-height: 1.6;
+    position: relative;
+}
+pre::before {
+    content: attr(data-lang);
+    position: absolute;
+    top: 6px;
+    right: 12px;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 2px;
+}
+code { font-family: var(--mono); }
+.tok-kw { color: var(--accent-2); }
+.tok-fn { color: var(--blue); }
+.tok-str { color: var(--accent); }
+.tok-num { color: var(--purple); }
+.tok-com { color: var(--dim); font-style: italic; }
+.tok-glob { color: var(--warn); }
 
-        .post {
-            display: table;
-            background-color: var(--post-bg);
-            border: 1px solid #777;
-            margin: 2px 0 4px 4px;
-            padding: 5px 8px 5px 5px;
-            max-width: 95%;
-        }
-        .post.highlight { background-color: var(--post-bg-hl); }
+p code, li code {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 12.5px;
+    color: var(--accent);
+}
 
-        .post-header { font-size: 12px; margin-bottom: 6px; }
-        .subject { color: #0F0C5D; font-weight: bold; }
-        .name { color: var(--name-color); font-weight: bold; }
-        .post-no { color: #000; }
-        .post-no a { text-decoration: none; color: #000; }
-        .post-no a:hover { color: red; }
-        .post-actions { font-size: 11px; margin-left: 8px; }
-        .post-actions a { cursor: pointer; text-decoration: none; }
-        .post-actions a:hover { text-decoration: underline; }
+ul.tight { padding-left: 20px; }
+ul.tight li { color: #c0c8d4; margin-bottom: 4px; }
 
-        /* Thumbnails */
-        .file-info { font-size: 11px; margin-bottom: 5px; }
-        .thumbnail-box { float: left; margin: 0 20px 5px 0; }
-        .thumbnail {
-            max-width: 150px;
-            max-height: 150px;
-            object-fit: contain;
-            border: 1px solid #777;
-            background: #FFF;
-            cursor: pointer;
-            display: block;
-        }
-        .thumbnail.expanded {
-            max-width: 100%;
-            max-height: none;
-        }
+/* === EXECUTOR TABLE === */
+.exec-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.exec-controls input[type=text] {
+    flex: 1;
+    min-width: 200px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    padding: 9px 12px;
+    border-radius: 6px;
+    font-family: var(--mono);
+    font-size: 13px;
+}
+.exec-controls input[type=text]:focus { outline: none; border-color: var(--accent); }
+.filter-pill {
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--dim);
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all .15s;
+}
+.filter-pill:hover { color: #fff; }
+.filter-pill.active {
+    color: #000;
+    background: var(--accent);
+    border-color: var(--accent);
+}
 
-        .comment {
-            font-size: 14px;
-            margin-left: 5px;
-            line-height: 1.35;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
+.exec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 12px;
+}
 
-        .quote { color: var(--quote-green); }
-        .postref {
-            color: var(--link-color);
-            text-decoration: underline;
-            cursor: pointer;
-        }
-        .postref:hover { color: red; }
+.exec-card {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    border-radius: 10px;
+    padding: 18px;
+    transition: all .15s;
+    position: relative;
+}
+.exec-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+.exec-card.down { opacity: .7; }
+.exec-card.down:hover { opacity: 1; }
 
-        .empty-state {
-            text-align: center;
-            font-style: italic;
-            color: #777;
-            padding: 30px;
-            font-size: 14px;
-        }
+.exec-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    gap: 10px;
+}
+.exec-name {
+    font-size: 17px;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: -.3px;
+}
+.exec-meta { font-size: 11px; color: var(--dim); margin-top: 2px; }
 
-        .hidden { display: none; }
+.badge {
+    font-size: 10px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+.badge.up {
+    background: rgba(0,255,156,.12);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+}
+.badge.down {
+    background: rgba(255,46,99,.1);
+    color: var(--accent-2);
+    border: 1px solid var(--accent-2);
+}
+.badge.dmca {
+    background: rgba(255,204,51,.08);
+    color: var(--warn);
+    border: 1px solid var(--warn);
+}
+.badge.dev {
+    background: rgba(92,200,255,.08);
+    color: var(--blue);
+    border: 1px solid var(--blue);
+}
 
-        /* Reply form (smaller variant) */
-        .reply-target {
-            text-align: center;
-            font-size: 12px;
-            margin-bottom: 6px;
-            font-style: italic;
-        }
-        .reply-target a { cursor: pointer; }
+.exec-desc { color: #b8c0cc; font-size: 13px; margin: 8px 0 12px; min-height: 36px; }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            font-size: 11px;
-            margin-top: 30px;
-            padding-top: 10px;
-            border-top: 1px solid #CCC;
-            color: #777;
-        }
+.exec-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+.tag {
+    font-size: 10px;
+    padding: 2px 8px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    color: var(--dim);
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
-        /* Top/bottom links */
-        .page-jump {
-            text-align: center;
-            margin: 12px 0;
-            font-size: 12px;
-        }
-    </style>
+.exec-foot {
+    border-top: 1px solid var(--line);
+    padding-top: 10px;
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--dim);
+    display: flex;
+    justify-content: space-between;
+}
+
+/* === SCRIPTS === */
+.script-list { display: flex; flex-direction: column; gap: 14px; }
+.script-card {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    border-radius: 10px;
+    padding: 22px;
+}
+.script-card h3 {
+    color: #fff;
+    margin: 0 0 4px;
+    font-size: 17px;
+}
+.script-card .meta {
+    font-size: 11px;
+    color: var(--dim);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* === FOOTER === */
+footer {
+    border-top: 1px solid var(--line);
+    margin-top: 60px;
+    padding: 26px 22px;
+    text-align: center;
+    color: var(--dim);
+    font-size: 12px;
+}
+footer .warn {
+    color: var(--warn);
+    margin-bottom: 6px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+/* tiny terminal */
+.terminal {
+    background: #05070b;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0;
+    overflow: hidden;
+    margin-top: 24px;
+}
+.term-bar {
+    background: #0a0d13;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--line);
+    font-size: 11px;
+    color: var(--dim);
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+.term-bar .lights { display: flex; gap: 5px; margin-right: 8px; }
+.term-bar .lights span {
+    width: 10px; height: 10px; border-radius: 50%;
+}
+.term-bar .lights span:nth-child(1) { background: #ff5f57; }
+.term-bar .lights span:nth-child(2) { background: #febc2e; }
+.term-bar .lights span:nth-child(3) { background: #28c840; }
+.term-body {
+    padding: 14px 16px;
+    font-size: 13px;
+    line-height: 1.7;
+}
+.term-body .prompt { color: var(--accent); }
+.term-body .out { color: #b8c0cc; }
+</style>
 </head>
-<body id="top">
+<body>
 
-    <div class="admin-nav">
-        [ <a data-mode="home" onclick="loadPosts('home')">Home</a> /
-        <a onclick="toggleUpload()">Post</a> /
-        <a data-mode="popular" onclick="loadPosts('popular')">Popular</a> /
-        <a data-mode="recent" onclick="loadPosts('recent')">Recent</a> /
-        <a data-mode="images" onclick="loadPosts('images')">Images</a> ]
+<div class="topbar">
+    <div class="topbar-inner">
+        <div class="brand">tuff<span class="tld">.academy</span><span class="dot"></span></div>
+        <div class="nav">
+            <a data-tab="home" class="active">Home</a>
+            <a data-tab="luau">Learn Luau</a>
+            <a data-tab="exploit">Exploit Basics</a>
+            <a data-tab="executors">Executors</a>
+            <a data-tab="scripts">Scripts</a>
+            <a data-tab="faq">FAQ</a>
+        </div>
+    </div>
+</div>
+
+<div class="wrap">
+
+<!-- ========== HOME ========== -->
+<div class="section active" id="home">
+    <div class="hero">
+        <span class="hero-tag">v1.0 // EST. 2026</span>
+        <h1>learn luau.<br>break <span>roblox</span> politely.</h1>
+        <p class="lede">tuff is a study hall for the Roblox exploiter — a no-bs intro to Luau, the executor scene, hooking, and writing scripts that actually run. read the lessons, check what's still alive, copy what works.</p>
+        <div class="hero-cta">
+            <a class="btn primary" data-go="luau">› start learning</a>
+            <a class="btn" data-go="executors">view executor status</a>
+        </div>
+
+        <div class="terminal">
+            <div class="term-bar">
+                <div class="lights"><span></span><span></span><span></span></div>
+                tuff@academy ~ luau-repl
+            </div>
+            <div class="term-body">
+                <div><span class="prompt">$</span> getgenv().welcome = "you made it"</div>
+                <div><span class="prompt">$</span> print(identifyexecutor())</div>
+                <div class="out">&gt; "Wave", "v3.4.1"</div>
+                <div><span class="prompt">$</span> _</div>
+            </div>
+        </div>
     </div>
 
-    <header>
-        <h1>4sakura</h1>
-        <div class="board-desc">/sakura/ - The Aura Dominus Archive</div>
-    </header>
-
-    <div class="stats-bar" id="stats-bar">0 transmissions archived</div>
-
-    <div id="section-indicator">MODE: HOME (ALL TRANSMISSIONS)</div>
-
-    <div class="search-row">
-        Search: <input type="text" id="searchBox" placeholder="filter by name, subject, or text" oninput="loadPosts(currentMode)">
-        <a onclick="document.getElementById('searchBox').value=''; loadPosts(currentMode)">[clear]</a>
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-label">Executors tracked</div>
+            <div class="stat-val" id="stat-total">0</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Currently UP</div>
+            <div class="stat-val up" id="stat-up">0</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">DMCA / shut down</div>
+            <div class="stat-val down" id="stat-down">0</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Lessons available</div>
+            <div class="stat-val">14</div>
+        </div>
     </div>
 
-    <div id="upload-box" class="post-form-area hidden">
-        <table class="post-table">
-            <tr id="reply-row" class="hidden">
-                <td class="label-cell">Reply To</td>
-                <td>
-                    <span id="reply-target-display"></span>
-                    <a onclick="cancelReply()" style="cursor:pointer;color:var(--link-color);">[cancel]</a>
-                </td>
-            </tr>
-            <tr>
-                <td class="label-cell">Name</td>
-                <td><input type="text" id="pName" placeholder="Anonymous" maxlength="40"></td>
-            </tr>
-            <tr>
-                <td class="label-cell">Subject</td>
-                <td><input type="text" id="pSubj" placeholder="Title" maxlength="80"></td>
-            </tr>
-            <tr>
-                <td class="label-cell">Comment</td>
-                <td><textarea id="pComm" rows="5" cols="38" maxlength="2000" placeholder="Lines starting with > render as quotes. Use &gt;&gt;ID to reply."></textarea></td>
-            </tr>
-            <tr>
-                <td class="label-cell">File</td>
-                <td><input type="file" id="pFile" accept="image/*"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <button onclick="postData()">Submit</button>
-                    <button onclick="toggleUpload()">Cancel</button>
-                </td>
-            </tr>
-        </table>
+    <div class="grid-2">
+        <div class="card">
+            <h3>Luau, fast</h3>
+            <p>Learn Roblox's flavor of Lua — variables, tables, metatables, OOP, the Roblox API, and the bits exploit-side that make it weird (typeof, FFlags, ContentProvider).</p>
+            <p style="margin-top:10px"><a data-go="luau">› open the syllabus</a></p>
+        </div>
+        <div class="card">
+            <h3>Exploiting, properly</h3>
+            <p>What an executor actually is, how scripts attach to a running game, and the global table you'll live in: <code>getgenv</code>, <code>hookfunction</code>, <code>getrawmetatable</code>, <code>checkcaller</code>.</p>
+            <p style="margin-top:10px"><a data-go="exploit">› read the basics</a></p>
+        </div>
+        <div class="card">
+            <h3>Executor radar</h3>
+            <p>A tracked list — what's UP, what's DOWN, what got DMCA'd into the dirt. Updated when something flips. Filter by platform, sort by status.</p>
+            <p style="margin-top:10px"><a data-go="executors">› check the board</a></p>
+        </div>
+        <div class="card">
+            <h3>Scripts that work</h3>
+            <p>Annotated example scripts — autofarm patterns, ESP, hookfunction recipes, getconnections tricks. Read first, run second.</p>
+            <p style="margin-top:10px"><a data-go="scripts">› browse scripts</a></p>
+        </div>
+    </div>
+</div>
+
+<!-- ========== LUAU ========== -->
+<div class="section" id="luau">
+    <div class="section-head">
+        <h2>Learn Luau</h2>
+        <p>Luau is Lua 5.1 with extra rules — gradual typing, sandboxing, and the Roblox standard library bolted on. Pick a topic on the left, read on the right.</p>
     </div>
 
-    <div class="page-jump">[ <a href="#bottom">Bottom</a> ]</div>
+    <div class="lessons">
+        <ul class="lesson-list" id="luau-list">
+            <li class="group-label">Fundamentals</li>
+            <li data-lesson="L1" class="active">01 // Hello, Luau</li>
+            <li data-lesson="L2">02 // Variables &amp; types</li>
+            <li data-lesson="L3">03 // Control flow</li>
+            <li data-lesson="L4">04 // Functions</li>
+            <li data-lesson="L5">05 // Tables</li>
+            <li class="group-label">Intermediate</li>
+            <li data-lesson="L6">06 // Metatables &amp; OOP</li>
+            <li data-lesson="L7">07 // Coroutines &amp; tasks</li>
+            <li class="group-label">Roblox API</li>
+            <li data-lesson="L8">08 // Services &amp; instances</li>
+            <li data-lesson="L9">09 // RemoteEvents</li>
+            <li data-lesson="L10">10 // UserInputService</li>
+            <li class="group-label">Exploit-flavor</li>
+            <li data-lesson="L11">11 // The exploit globals</li>
+            <li data-lesson="L12">12 // Hooking functions</li>
+            <li data-lesson="L13">13 // getconnections</li>
+            <li data-lesson="L14">14 // Building a UI library</li>
+        </ul>
+        <div class="lesson-body" id="luau-body"></div>
+    </div>
+</div>
 
-    <div id="board"></div>
+<!-- ========== EXPLOIT BASICS ========== -->
+<div class="section" id="exploit">
+    <div class="section-head">
+        <h2>Exploit Basics</h2>
+        <p>Read this before touching an executor. Knowing the vocabulary keeps you from copy-pasting your way into a clueless ban.</p>
+    </div>
 
-    <div class="page-jump" id="bottom">[ <a href="#top">Top</a> ]</div>
+    <div class="lesson-body">
+        <div class="breadcrumb">EXPLOIT // INTRO</div>
+        <h2>What an executor actually is</h2>
+        <p>An executor is a program that injects a Lua/Luau virtual machine into the running Roblox client process and exposes a way to run scripts inside that VM with elevated privileges. Roblox normally sandboxes scripts heavily — an executor breaks out of that sandbox so you can call functions and read state the game's developers never intended you to touch.</p>
 
-    <footer>
-        4sakura &mdash; classic edition. Posts are stored locally in your browser.
-    </footer>
+        <h4>How injection works (high level)</h4>
+        <ul class="tight">
+            <li><b>DLL injection</b> — load a custom library into the client, hook the script scheduler, attach a Luau state.</li>
+            <li><b>Bytecode emission</b> — re-compile your script through Luau's compiler, push it as a function on the running task scheduler.</li>
+            <li><b>Identity / Capability bump</b> — set the script identity to a level that bypasses Roblox's caller-checks (<code>checkcaller</code>, capability flags).</li>
+        </ul>
 
-    <script>
-        /* === 4SAKURA VINTAGE ENGINE === */
-        const STORAGE_KEY = '4sakura_classic_v1';
-        let archive = [];
-        try { archive = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch(e) { archive = []; }
+        <h4>The global table</h4>
+        <p>Most executors expose a shared global table accessible via <code>getgenv()</code>. Anything you put there persists across <i>all</i> scripts you run in the same session — it's how loaders pass config to libraries.</p>
+<pre data-lang="LUAU"><code><span class="tok-fn">getgenv</span>().<span class="tok-glob">Settings</span> = {
+    <span class="tok-glob">FarmEnabled</span> = <span class="tok-kw">true</span>,
+    <span class="tok-glob">AutoCollect</span> = <span class="tok-kw">true</span>,
+    <span class="tok-glob">Speed</span> = <span class="tok-num">32</span>,
+}
 
-        let currentMode = 'home';
-        let replyTo = null;
+<span class="tok-com">-- another script later in the session reads it</span>
+<span class="tok-kw">if</span> <span class="tok-fn">getgenv</span>().<span class="tok-glob">Settings</span>.<span class="tok-glob">FarmEnabled</span> <span class="tok-kw">then</span>
+    <span class="tok-com">-- ...</span>
+<span class="tok-kw">end</span></code></pre>
 
-        function escapeHTML(str) {
-            return String(str).replace(/[&<>"']/g, c => ({
-                '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-            })[c]);
-        }
+        <h4>The vocabulary you must know</h4>
+        <ul class="tight">
+            <li><code>identifyexecutor()</code> — returns the name + version.</li>
+            <li><code>checkcaller()</code> — true if the call originated from your script, not from game code.</li>
+            <li><code>hookfunction(target, replacement)</code> — swap a function's behavior, returns the original.</li>
+            <li><code>hookmetamethod(obj, name, fn)</code> — same idea, but for things like <code>__index</code> or <code>__namecall</code>.</li>
+            <li><code>getrawmetatable(obj)</code> + <code>setreadonly(t, false)</code> — go fishing inside Roblox's protected metatables.</li>
+            <li><code>getnamecallmethod()</code> — inside a <code>__namecall</code> hook, returns the method being invoked.</li>
+            <li><code>getconnections(signal)</code> — list every <code>:Connect</code> attached to a signal so you can disable, fire, or replay them.</li>
+            <li><code>fireclickdetector / fireproximityprompt / firetouchinterest</code> — interact with things you "shouldn't" be able to from a script.</li>
+        </ul>
 
-        function formatComment(text) {
-            const escaped = escapeHTML(text || '');
-            return escaped.split('\n').map(line => {
-                let l = line.replace(/&gt;&gt;(\d+)/g,
-                    (_, id) => `<a class="postref" onclick="jumpTo(${id})">&gt;&gt;${id}</a>`);
-                if (line.startsWith('&gt;') && !line.startsWith('&gt;&gt;')) {
-                    return `<span class="quote">${l}</span>`;
-                }
-                return l;
-            }).join('\n');
-        }
+        <h4>The cardinal rules</h4>
+        <ul class="tight">
+            <li>Don't ever paste a script you can't read. <i>Loadstring is how you get keylogged.</i></li>
+            <li>Use a real alt account. Roblox bans by HWID + cookie — your main is gone if you slip.</li>
+            <li>Anti-cheat is mostly server-side. Speed and noclip get caught faster than you'd think; learn what's safe to touch on the client.</li>
+            <li>Free executors are funded by ads, mining, or worse. Treat anything keyless and ad-walled with suspicion.</li>
+        </ul>
 
-        function save() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(archive));
-        }
+        <h4>The legal/ethical line</h4>
+        <p>Modifying a Roblox client violates Roblox's ToS and gets accounts terminated. It is not, in itself, illegal in most places — but DMCA takedowns hit executors hard because they ship Roblox bytecode internals. That's why this site exists: to teach the language and the technique, not to ship cheats into other people's competitive games.</p>
+    </div>
+</div>
 
-        function updateStats() {
-            const total = archive.length;
-            const withImg = archive.filter(p => p.img).length;
-            document.getElementById('stats-bar').innerText =
-                `${total} transmission${total===1?'':'s'} archived — ${withImg} with attached file${withImg===1?'':'s'}`;
-        }
+<!-- ========== EXECUTORS ========== -->
+<div class="section" id="executors">
+    <div class="section-head">
+        <h2>Executor Status</h2>
+        <p>Tracking what's UP (downloadable + working), DOWN (offline / unstable), and DMCA (taken down by Roblox or Cloudflare). Hover for detail. This is community knowledge, not a recommendation.</p>
+    </div>
 
-        function toggleUpload() {
-            const box = document.getElementById('upload-box');
-            box.classList.toggle('hidden');
-            if (!box.classList.contains('hidden')) {
-                document.getElementById('pComm').focus();
-            }
-        }
+    <div class="exec-controls">
+        <input type="text" id="exec-search" placeholder="search executors…">
+        <button class="filter-pill active" data-filter="all">all</button>
+        <button class="filter-pill" data-filter="up">UP</button>
+        <button class="filter-pill" data-filter="down">DOWN</button>
+        <button class="filter-pill" data-filter="dmca">DMCA</button>
+        <button class="filter-pill" data-filter="pc">PC</button>
+        <button class="filter-pill" data-filter="mobile">Mobile</button>
+        <button class="filter-pill" data-filter="mac">macOS</button>
+    </div>
 
-        function setIndicator(mode) {
-            const labels = {
-                home: 'HOME (ALL TRANSMISSIONS)',
-                popular: 'POPULAR (BY VIEW COUNT)',
-                recent: 'RECENT (NEWEST FIRST)',
-                images: 'IMAGES ONLY'
-            };
-            document.getElementById('section-indicator').innerText = 'MODE: ' + (labels[mode] || mode.toUpperCase());
-            document.querySelectorAll('.admin-nav a').forEach(a => {
-                a.classList.toggle('active', a.dataset.mode === mode);
-            });
-        }
+    <div class="exec-grid" id="exec-grid"></div>
+</div>
 
-        function replyToPost(id) {
-            replyTo = id;
-            document.getElementById('reply-row').classList.remove('hidden');
-            document.getElementById('reply-target-display').innerText = 'No.' + id;
-            const box = document.getElementById('upload-box');
-            if (box.classList.contains('hidden')) toggleUpload();
-            const comm = document.getElementById('pComm');
-            comm.value = `>>${id}\n` + comm.value;
-            comm.focus();
-            comm.setSelectionRange(comm.value.length, comm.value.length);
-        }
+<!-- ========== SCRIPTS ========== -->
+<div class="section" id="scripts">
+    <div class="section-head">
+        <h2>Annotated Scripts</h2>
+        <p>Working examples with comments. Read them. Type them. Never blind-execute someone else's loadstring.</p>
+    </div>
 
-        function cancelReply() {
-            replyTo = null;
-            document.getElementById('reply-row').classList.add('hidden');
-        }
+    <div class="script-list">
+        <div class="script-card">
+            <h3>Infinite Jump</h3>
+            <div class="meta">DIFFICULTY · BEGINNER &nbsp;·&nbsp; CLIENT-ONLY &nbsp;·&nbsp; ~10 LINES</div>
+<pre data-lang="LUAU"><code><span class="tok-kw">local</span> uis  = <span class="tok-fn">game</span>:<span class="tok-fn">GetService</span>(<span class="tok-str">"UserInputService"</span>)
+<span class="tok-kw">local</span> plr  = <span class="tok-fn">game</span>:<span class="tok-fn">GetService</span>(<span class="tok-str">"Players"</span>).<span class="tok-glob">LocalPlayer</span>
 
-        function jumpTo(id) {
-            const el = document.getElementById('post-' + id);
-            if (!el) { alert('Post No.' + id + ' not found in archive.'); return; }
-            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            el.classList.add('highlight');
-            setTimeout(() => el.classList.remove('highlight'), 1500);
-        }
+uis.<span class="tok-glob">JumpRequest</span>:<span class="tok-fn">Connect</span>(<span class="tok-kw">function</span>()
+    <span class="tok-kw">local</span> hum = plr.<span class="tok-glob">Character</span> <span class="tok-kw">and</span> plr.<span class="tok-glob">Character</span>:<span class="tok-fn">FindFirstChildOfClass</span>(<span class="tok-str">"Humanoid"</span>)
+    <span class="tok-kw">if</span> hum <span class="tok-kw">then</span> hum:<span class="tok-fn">ChangeState</span>(<span class="tok-fn">Enum</span>.<span class="tok-glob">HumanoidStateType</span>.<span class="tok-glob">Jumping</span>) <span class="tok-kw">end</span>
+<span class="tok-kw">end</span>)</code></pre>
+            <p>JumpRequest fires every time the player tries to jump (including holding Space). We just override the humanoid state and let the engine handle the rest. Pure client; no server even sees it.</p>
+        </div>
 
-        function deletePost(id) {
-            if (!confirm('Delete post No.' + id + '?')) return;
-            archive = archive.filter(p => p.id !== id);
-            save();
-            loadPosts(currentMode);
-        }
+        <div class="script-card">
+            <h3>Player ESP (boxes + names)</h3>
+            <div class="meta">DIFFICULTY · INTERMEDIATE &nbsp;·&nbsp; CLIENT-ONLY &nbsp;·&nbsp; DRAWING API</div>
+<pre data-lang="LUAU"><code><span class="tok-kw">local</span> Players = <span class="tok-fn">game</span>:<span class="tok-fn">GetService</span>(<span class="tok-str">"Players"</span>)
+<span class="tok-kw">local</span> Camera  = <span class="tok-fn">workspace</span>.<span class="tok-glob">CurrentCamera</span>
 
-        function bumpClicks(id) {
-            const p = archive.find(x => x.id === id);
-            if (p) { p.clicks = (p.clicks || 0) + 1; save(); }
-        }
+<span class="tok-kw">local</span> <span class="tok-kw">function</span> trackPlayer(p)
+    <span class="tok-kw">local</span> name = <span class="tok-fn">Drawing</span>.<span class="tok-fn">new</span>(<span class="tok-str">"Text"</span>)
+    name.<span class="tok-glob">Size</span> = <span class="tok-num">14</span>; name.<span class="tok-glob">Center</span> = <span class="tok-kw">true</span>; name.<span class="tok-glob">Outline</span> = <span class="tok-kw">true</span>
+    <span class="tok-kw">local</span> box  = <span class="tok-fn">Drawing</span>.<span class="tok-fn">new</span>(<span class="tok-str">"Square"</span>)
+    box.<span class="tok-glob">Thickness</span> = <span class="tok-num">1</span>; box.<span class="tok-glob">Color</span> = <span class="tok-fn">Color3</span>.<span class="tok-fn">fromRGB</span>(<span class="tok-num">0</span>,<span class="tok-num">255</span>,<span class="tok-num">156</span>)
 
-        function toggleImage(ev, id) {
-            const img = ev.currentTarget;
-            img.classList.toggle('expanded');
-            bumpClicks(id);
-        }
+    <span class="tok-fn">game</span>:<span class="tok-fn">GetService</span>(<span class="tok-str">"RunService"</span>).<span class="tok-glob">RenderStepped</span>:<span class="tok-fn">Connect</span>(<span class="tok-kw">function</span>()
+        <span class="tok-kw">local</span> char = p.<span class="tok-glob">Character</span>
+        <span class="tok-kw">local</span> hrp  = char <span class="tok-kw">and</span> char:<span class="tok-fn">FindFirstChild</span>(<span class="tok-str">"HumanoidRootPart"</span>)
+        <span class="tok-kw">if</span> <span class="tok-kw">not</span> hrp <span class="tok-kw">then</span> name.<span class="tok-glob">Visible</span> = <span class="tok-kw">false</span>; box.<span class="tok-glob">Visible</span> = <span class="tok-kw">false</span>; <span class="tok-kw">return</span> <span class="tok-kw">end</span>
 
-        async function postData() {
-            const name = document.getElementById('pName').value.trim() || 'Anonymous';
-            const subj = document.getElementById('pSubj').value.trim() || 'Untitled';
-            const comm = document.getElementById('pComm').value.trim();
-            const file = document.getElementById('pFile').files[0];
+        <span class="tok-kw">local</span> pos, on = Camera:<span class="tok-fn">WorldToViewportPoint</span>(hrp.<span class="tok-glob">Position</span>)
+        name.<span class="tok-glob">Visible</span> = on; box.<span class="tok-glob">Visible</span> = on
+        name.<span class="tok-glob">Text</span>     = p.<span class="tok-glob">Name</span>
+        name.<span class="tok-glob">Position</span> = <span class="tok-fn">Vector2</span>.<span class="tok-fn">new</span>(pos.<span class="tok-glob">X</span>, pos.<span class="tok-glob">Y</span> - <span class="tok-num">36</span>)
+        box.<span class="tok-glob">Size</span>      = <span class="tok-fn">Vector2</span>.<span class="tok-fn">new</span>(<span class="tok-num">42</span>, <span class="tok-num">60</span>)
+        box.<span class="tok-glob">Position</span>  = <span class="tok-fn">Vector2</span>.<span class="tok-fn">new</span>(pos.<span class="tok-glob">X</span> - <span class="tok-num">21</span>, pos.<span class="tok-glob">Y</span> - <span class="tok-num">30</span>)
+    <span class="tok-kw">end</span>)
+<span class="tok-kw">end</span>
 
-            if (!comm && !file) { alert('System requires text or a file.'); return; }
+<span class="tok-kw">for</span> _, p <span class="tok-kw">in</span> <span class="tok-fn">ipairs</span>(Players:<span class="tok-fn">GetPlayers</span>()) <span class="tok-kw">do</span>
+    <span class="tok-kw">if</span> p ~= Players.<span class="tok-glob">LocalPlayer</span> <span class="tok-kw">then</span> trackPlayer(p) <span class="tok-kw">end</span>
+<span class="tok-kw">end</span>
+Players.<span class="tok-glob">PlayerAdded</span>:<span class="tok-fn">Connect</span>(trackPlayer)</code></pre>
+            <p>The Drawing API is executor-provided — it draws on the screen above the game. <code>WorldToViewportPoint</code> projects 3D positions to 2D pixels. This is the same skeleton every "ESP" script in the wild uses.</p>
+        </div>
 
-            if (file && file.size > 5 * 1024 * 1024) {
-                alert('File too large. 5MB max.');
-                return;
-            }
+        <div class="script-card">
+            <h3>Anti-AFK (hookfunction)</h3>
+            <div class="meta">DIFFICULTY · INTERMEDIATE &nbsp;·&nbsp; CLIENT-ONLY &nbsp;·&nbsp; HOOKING</div>
+<pre data-lang="LUAU"><code><span class="tok-kw">local</span> vu = <span class="tok-fn">game</span>:<span class="tok-fn">GetService</span>(<span class="tok-str">"VirtualUser"</span>)
 
-            let b64 = '';
-            if (file) {
-                b64 = await new Promise(r => {
-                    const reader = new FileReader();
-                    reader.onload = () => r(reader.result);
-                    reader.readAsDataURL(file);
-                });
-            }
+<span class="tok-fn">game</span>:<span class="tok-fn">GetService</span>(<span class="tok-str">"Players"</span>).<span class="tok-glob">LocalPlayer</span>.<span class="tok-glob">Idled</span>:<span class="tok-fn">Connect</span>(<span class="tok-kw">function</span>()
+    vu:<span class="tok-fn">Button2Down</span>(<span class="tok-fn">Vector2</span>.<span class="tok-fn">new</span>(<span class="tok-num">0</span>, <span class="tok-num">0</span>), <span class="tok-fn">workspace</span>.<span class="tok-glob">CurrentCamera</span>.<span class="tok-glob">CFrame</span>)
+    <span class="tok-fn">task</span>.<span class="tok-fn">wait</span>(<span class="tok-num">1</span>)
+    vu:<span class="tok-fn">Button2Up</span>(<span class="tok-fn">Vector2</span>.<span class="tok-fn">new</span>(<span class="tok-num">0</span>, <span class="tok-num">0</span>), <span class="tok-fn">workspace</span>.<span class="tok-glob">CurrentCamera</span>.<span class="tok-glob">CFrame</span>)
+<span class="tok-kw">end</span>)</code></pre>
+            <p>Roblox kicks idle players after ~20 minutes. <code>VirtualUser</code> simulates input from inside the engine — Roblox's own anti-idle, so it's safe. Don't actually farm content like this in competitive games; it's noticeable.</p>
+        </div>
 
-            const newEntry = {
-                id: Date.now() % 10000000,
-                name, subj, comm,
-                img: b64,
-                fileName: file ? file.name : '',
-                fileSize: file ? file.size : 0,
-                time: new Date().toLocaleString(),
-                clicks: 0,
-                replyTo: replyTo
-            };
+        <div class="script-card">
+            <h3>Remote spy via __namecall hook</h3>
+            <div class="meta">DIFFICULTY · ADVANCED &nbsp;·&nbsp; METAMETHOD HOOK</div>
+<pre data-lang="LUAU"><code><span class="tok-kw">local</span> mt   = <span class="tok-fn">getrawmetatable</span>(<span class="tok-fn">game</span>)
+<span class="tok-fn">setreadonly</span>(mt, <span class="tok-kw">false</span>)
+<span class="tok-kw">local</span> orig = mt.<span class="tok-glob">__namecall</span>
 
-            archive.unshift(newEntry);
-            save();
+mt.<span class="tok-glob">__namecall</span> = <span class="tok-fn">newcclosure</span>(<span class="tok-kw">function</span>(self, ...)
+    <span class="tok-kw">local</span> method = <span class="tok-fn">getnamecallmethod</span>()
+    <span class="tok-kw">if</span> <span class="tok-kw">not</span> <span class="tok-fn">checkcaller</span>() <span class="tok-kw">and</span>
+       (method == <span class="tok-str">"FireServer"</span> <span class="tok-kw">or</span> method == <span class="tok-str">"InvokeServer"</span>) <span class="tok-kw">then</span>
+        <span class="tok-fn">print</span>(<span class="tok-str">"[remote]"</span>, self:<span class="tok-fn">GetFullName</span>(), method, ...)
+    <span class="tok-kw">end</span>
+    <span class="tok-kw">return</span> orig(self, ...)
+<span class="tok-kw">end</span>)
+<span class="tok-fn">setreadonly</span>(mt, <span class="tok-kw">true</span>)</code></pre>
+            <p>Every method call on a Roblox object goes through <code>__namecall</code>. Hooking it lets you watch every <code>:FireServer()</code> the game does — invaluable for figuring out what arguments a remote expects so you can call it yourself.</p>
+        </div>
+    </div>
+</div>
 
-            document.getElementById('pComm').value = '';
-            document.getElementById('pSubj').value = '';
-            document.getElementById('pFile').value = '';
-            cancelReply();
-            toggleUpload();
-            loadPosts('recent');
-            setTimeout(() => jumpTo(newEntry.id), 50);
-        }
+<!-- ========== FAQ ========== -->
+<div class="section" id="faq">
+    <div class="section-head">
+        <h2>FAQ</h2>
+        <p>Everything you'd Google after lesson three.</p>
+    </div>
 
-        function formatSize(bytes) {
-            if (!bytes) return '';
-            if (bytes < 1024) return bytes + ' B';
-            if (bytes < 1024 * 1024) return (bytes/1024).toFixed(1) + ' KB';
-            return (bytes/1024/1024).toFixed(2) + ' MB';
-        }
+    <div class="grid-2">
+        <div class="card">
+            <h3>Will my account get banned?</h3>
+            <p>If you exploit on your main, eventually yes. Roblox bans by account, IP and HWID. Anti-cheat catches the obvious stuff — speed, fly, kill aura — fastest. Use an alt and assume it'll be lost.</p>
+        </div>
+        <div class="card">
+            <h3>What's the difference between an executor and a script?</h3>
+            <p>An executor is the program that injects a privileged Lua VM into the client. A script is a chunk of Luau that runs inside that VM. Same way a browser is to a webpage.</p>
+        </div>
+        <div class="card">
+            <h3>What does "DMCA'd" mean?</h3>
+            <p>Roblox sends a DMCA takedown notice to the executor's host (Cloudflare, GitHub, etc.) for shipping their proprietary bytecode/internals. Site goes offline; sometimes it comes back, sometimes it doesn't.</p>
+        </div>
+        <div class="card">
+            <h3>Why are some executors free and some paid?</h3>
+            <p>Paid executors fund development and obfuscation work (the cat-and-mouse with Hyperion / Byfron). Free executors are usually funded by ads, key systems, or — being honest — selling your data. Pick carefully.</p>
+        </div>
+        <div class="card">
+            <h3>Why is my script "not whitelisted"?</h3>
+            <p>The script author put a whitelist check that calls home to a server. Either you pay/unlock, or — read the script — you nop the check out yourself. Don't paste random "bypasses"; read first.</p>
+        </div>
+        <div class="card">
+            <h3>Can I learn Luau without exploiting?</h3>
+            <p>Of course. <a href="https://create.roblox.com/docs" target="_blank" rel="noopener">create.roblox.com/docs</a> is the official place. Build a game, ship it, learn the API the legitimate way. Exploit knowledge is way more useful when you understand the engine itself.</p>
+        </div>
+    </div>
+</div>
 
-        function loadPosts(mode) {
-            currentMode = mode;
-            const board = document.getElementById('board');
-            setIndicator(mode);
-            updateStats();
+</div>
 
-            let data = [...archive];
+<footer>
+    <div class="warn">▲ educational content — modifying the Roblox client breaks ToS and may get accounts banned</div>
+    tuff.academy &middot; classroom for the curious &middot; not affiliated with Roblox Corporation
+</footer>
 
-            if (mode === 'popular') data.sort((a, b) => (b.clicks||0) - (a.clicks||0));
-            else if (mode === 'images') data = data.filter(p => p.img);
+<script>
+/* === DATA === */
+const EXECUTORS = [
+    { name: "Wave", platform: ["PC","Mac"], status: "up", price: "Paid", level: 8, desc: "Stable since 2023, ~Lvl 8, big script support. Currently the daily-driver for many on Windows.", tags: ["Hyperion-bypass","Drawing","getconnections"], updated: "2026-04-12" },
+    { name: "Solara", platform: ["PC"], status: "up", price: "Free", level: 7, desc: "Free, fast updates, decent function support. Ad-walled key system. Quality-vs-noise tradeoff.", tags: ["Free","Keysystem","Drawing"], updated: "2026-04-22" },
+    { name: "Fluxus", platform: ["PC","Mobile"], status: "up", price: "Free", level: 7, desc: "Long-running free option with a mobile build. Slower update cadence but reliable.", tags: ["Free","Mobile","Cross-platform"], updated: "2026-04-08" },
+    { name: "Krnl", platform: ["PC"], status: "down", price: "Free", level: 7, desc: "Iconic free executor; effectively dead after Hyperion. Listed for posterity.", tags: ["Legacy","Free"], updated: "2024-04-10" },
+    { name: "Synapse X", platform: ["PC"], status: "dmca", price: "Paid", level: 8, desc: "Discontinued by Raptor in 2023. The classic premium executor everyone copied.", tags: ["Discontinued","Legacy"], updated: "2023-04-26" },
+    { name: "Electron", platform: ["Mac"], status: "dmca", price: "Paid", level: 7, desc: "Dominant macOS executor, taken down by DMCA pressure. Replacement scene is fragmented.", tags: ["macOS","DMCA"], updated: "2024-09-03" },
+    { name: "Hydrogen", platform: ["Mobile"], status: "up", price: "Free", level: 6, desc: "Android-focused, biggest mobile community. Surprisingly solid for free.", tags: ["Android","Free","Drawing"], updated: "2026-04-19" },
+    { name: "Delta", platform: ["Mobile"], status: "up", price: "Free", level: 6, desc: "iOS + Android. Ad-heavy key system, but mostly works.", tags: ["iOS","Android","Keysystem"], updated: "2026-04-21" },
+    { name: "Arceus X", platform: ["Mobile"], status: "up", price: "Free", level: 6, desc: "Mobile veteran. UI is clunky, but it's been around forever and rarely fully dies.", tags: ["Android","Free"], updated: "2026-04-15" },
+    { name: "Codex", platform: ["Mobile"], status: "up", price: "Free", level: 6, desc: "iOS executor with active updates. Crashy under load; mileage varies.", tags: ["iOS","Free"], updated: "2026-04-18" },
+    { name: "Trigon", platform: ["Mobile"], status: "up", price: "Free", level: 7, desc: "Aggressively updated Android executor — high level, some Hyperion-game support.", tags: ["Android","Hyperion-bypass"], updated: "2026-04-25" },
+    { name: "Velocity", platform: ["PC"], status: "up", price: "Paid", level: 8, desc: "Newer paid PC option, modern UI, fast Hyperion patch turnaround.", tags: ["Hyperion-bypass","Drawing"], updated: "2026-04-23" },
+    { name: "Awp.gg", platform: ["PC"], status: "up", price: "Paid", level: 8, desc: "Premium PC executor, relatively quiet community but consistent.", tags: ["Drawing","Stable"], updated: "2026-04-14" },
+    { name: "Script-Ware", platform: ["PC","Mac"], status: "down", price: "Paid", level: 8, desc: "Once cross-platform premium standard. Currently dormant; community migrated.", tags: ["Legacy"], updated: "2024-12-02" },
+    { name: "Sentinel", platform: ["Mac"], status: "up", price: "Paid", level: 7, desc: "Active macOS executor filling Electron's gap. Smaller community but works.", tags: ["macOS","Paid"], updated: "2026-04-17" },
+    { name: "JJSploit", platform: ["PC"], status: "up", price: "Free", level: 4, desc: "Beginner-friendly, severely limited function support — no Drawing, no Hyperion games.", tags: ["Free","Beginner","Limited"], updated: "2026-04-11" },
+    { name: "Comet-X", platform: ["PC"], status: "down", price: "Free", level: 6, desc: "Free PC option — currently failing on the latest Roblox update. Awaiting patch.", tags: ["Free","Updating"], updated: "2026-04-05" },
+    { name: "Nezur", platform: ["PC"], status: "dmca", price: "Free", level: 7, desc: "Cloudflare/Roblox DMCA hit early 2026. Site dark; unlikely to return.", tags: ["DMCA","Free"], updated: "2026-02-19" },
+];
 
-            const q = (document.getElementById('searchBox').value || '').toLowerCase().trim();
-            if (q) {
-                data = data.filter(p =>
-                    (p.name||'').toLowerCase().includes(q) ||
-                    (p.subj||'').toLowerCase().includes(q) ||
-                    (p.comm||'').toLowerCase().includes(q));
-            }
+/* === LESSONS === */
+const LESSONS = {
+L1: { crumb: "FUNDAMENTALS · 01", title: "Hello, Luau", html: `
+<p>Luau is the language of Roblox. It's based on Lua 5.1 with extra features bolted on: gradual typing, string interpolation, the <code>continue</code> keyword, compound assignment, and a stricter sandbox. If you've written Lua, you can write Luau.</p>
+<h4>The smallest possible script</h4>
+<pre data-lang="LUAU"><code><span class="tok-fn">print</span>(<span class="tok-str">"hello, tuff"</span>)</code></pre>
+<p>Run that in any executor and it lands in the developer console (F9 in-game). Comments use <code>--</code>; multiline comments use <code>--[[ ... ]]</code>. Statements don't need semicolons.</p>
+<h4>String interpolation (Luau-only)</h4>
+<pre data-lang="LUAU"><code><span class="tok-kw">local</span> name = <span class="tok-str">"player"</span>
+<span class="tok-fn">print</span>(\`hello, {name}\`)  <span class="tok-com">-- backticks, curly braces</span></code></pre>
+<p>Lua doesn't have this. Luau does. You'll see both <code>..</code> string concatenation and backtick interpolation in the wild.</p>
+` },
+L2: { crumb: "FUNDAMENTALS · 02", title: "Variables & types", html: `
+<p>Luau has nine value types: <code>nil</code>, <code>boolean</code>, <code>number</code>, <code>string</code>, <code>function</code>, <code>thread</code>, <code>table</code>, <code>userdata</code>, and <code>vector</code>. <code>local</code> declares a local; without <code>local</code> you write to the global environment, which in an exploit context is a footgun.</p>
+<pre data-lang="LUAU"><code><span class="tok-kw">local</span> n: <span class="tok-fn">number</span>  = <span class="tok-num">42</span>
+<span class="tok-kw">local</span> s: <span class="tok-fn">string</span>  = <span class="tok-str">"abc"</span>
+<span class="tok-kw">local</span> ok: <span class="tok-fn">boolean</span> = <span class="tok-kw">true</span>
+<span class="tok-kw">local</span> nada       = <span class="tok-kw">nil</span>      <span class="tok-com">-- type optional, inferred</span></code></pre>
+<h4>typeof vs type</h4>
+<p>Roblox userdata (Vector3, CFrame, Instance) all report as <code>"userdata"</code> from <code>type()</code> — useless. Use Roblox's <code>typeof()</code> instead, which knows about engine types.</p>
+<pre data-lang="LUAU"><code><span class="tok-fn">print</span>(<span class="tok-fn">type</span>(<span class="tok-fn">Vector3</span>.<span class="tok-fn">new</span>()))    <span class="tok-com">-- "userdata"</span>
+<span class="tok-fn">print</span>(<span class="tok-fn">typeof</span>(<span class="tok-fn">Vector3</span>.<span class="tok-fn">new</span>()))  <span class="tok-com">-- "Vector3"</span></code></pre>
+` },
+L3: { crumb: "FUNDAMENTALS · 03", title: "Control flow", html: `
+<p>If, while, repeat, for. The shape is Lua-classic.</p>
+<pre data-lang="LUAU"><code><span class="tok-kw">if</span> hp &lt;= <span class="tok-num">0</span> <span class="tok-kw">then</span>
+    <span class="tok-fn">print</span>(<span class="tok-str">"dead"</span>)
+<span class="tok-kw">elseif</span> hp &lt; <span class="tok-num">25</span> <span class="tok-kw">then</span>
+    <span class="tok-fn">print</span>(<span class="tok-str">"low hp"</span>)
+<span class="tok-kw">else</span>
+    <span class="tok-fn">print</span>(<span class="tok-str">"fine"</span>)
+<span class="tok-kw">end</span>
 
-            if (data.length === 0) {
-                board.innerHTML = `<div class="empty-state">
-                    ${q ? 'No transmissions match your filter.' :
-                          'The archive is empty. Click [Post] to begin transmission.'}
-                </div>`;
-                return;
-            }
+<span class="tok-kw">for</span> i = <span class="tok-num">1</span>, <span class="tok-num">10</span>, <span class="tok-num">2</span> <span class="tok-kw">do</span>
+    <span class="tok-fn">print</span>(i)   <span class="tok-com">-- 1, 3, 5, 7, 9</span>
+<span class="tok-kw">end</span>
 
-            board.innerHTML = data.map(p => {
-                const safeName = escapeHTML(p.name);
-                const safeSubj = escapeHTML(p.subj);
-                const safeFileName = escapeHTML(p.fileName || `sakura_capture_${p.id}.png`);
-                const replyLine = p.replyTo
-                    ? `<div class="reply-target">in reply to <a class="postref" onclick="jumpTo(${p.replyTo})">&gt;&gt;${p.replyTo}</a></div>`
-                    : '';
-                const imgHTML = p.img ? `
-                    <div class="thumbnail-box">
-                        <div class="file-info">File: ${safeFileName}${p.fileSize ? ' (' + formatSize(p.fileSize) + ')' : ''}</div>
-                        <img src="${p.img}" class="thumbnail" alt="attachment" onclick="toggleImage(event, ${p.id})">
-                    </div>` : '';
+<span class="tok-kw">for</span> i, p <span class="tok-kw">in</span> <span class="tok-fn">ipairs</span>(<span class="tok-fn">game</span>.<span class="tok-glob">Players</span>:<span class="tok-fn">GetPlayers</span>()) <span class="tok-kw">do</span>
+    <span class="tok-fn">print</span>(p.<span class="tok-glob">Name</span>)
+<span class="tok-kw">end</span></code></pre>
+<p>Luau adds <code>continue</code> (vanilla Lua doesn't) and supports compound assignment — <code>x += 1</code> works.</p>
+` },
+L4: { crumb: "FUNDAMENTALS · 04", title: "Functions", html: `
+<p>Functions are first-class. Multi-return, variadic args, closures — all there.</p>
+<pre data-lang="LUAU"><code><span class="tok-kw">local</span> <span class="tok-kw">function</span> divmod(a, b)
+    <span class="tok-kw">return</span> a // b, a % b
+<span class="tok-kw">end</span>
 
-                return `
-                    <div class="post" id="post-${p.id}">
-                        ${replyLine}
-                        <div class="post-header">
-                            <span class="subject">${safeSubj}</span>
-                            <span class="name">${safeName}</span>
-                            ${escapeHTML(p.time)}
-                            <span class="post-no">No.<a onclick="replyToPost(${p.id})">${p.id}</a></span>
-                            <span class="post-actions">
-                                [<a onclick="replyToPost(${p.id})">reply</a>]
-                                [<a onclick="deletePost(${p.id})">delete</a>]
-                                ${p.clicks ? `<span style="color:#777;"> &middot; ${p.clicks} view${p.clicks===1?'':'s'}</span>` : ''}
-                            </span>
-                        </div>
-                        ${imgHTML}
-                        <div class="comment">${formatComment(p.comm)}</div>
-                    </div>
-                    <br clear="left">
-                `;
-            }).join('');
-        }
+<span class="tok-kw">local</span> q, r = divmod(<span class="tok-num">17</span>, <span class="tok-num">5</span>)
+<span class="tok-fn">print</span>(q, r)  <span class="tok-com">-- 3, 2</span>
 
-        // Keyboard: Esc closes upload box
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                const box = document.getElementById('upload-box');
-                if (!box.classList.contains('hidden')) toggleUpload();
-            }
-        });
+<span class="tok-kw">local</span> <span class="tok-kw">function</span> sum(...)
+    <span class="tok-kw">local</span> t = {...}
+    <span class="tok-kw">local</span> s = <span class="tok-num">0</span>
+    <span class="tok-kw">for</span> _, v <span class="tok-kw">in</span> t <span class="tok-kw">do</span> s += v <span class="tok-kw">end</span>
+    <span class="tok-kw">return</span> s
+<span class="tok-kw">end</span></code></pre>
+<p>Closures capture their enclosing locals — useful for state without classes.</p>
+` },
+L5: { crumb: "FUNDAMENTALS · 05", title: "Tables", html: `
+<p>The table is the only real data structure in Luau. Arrays, dicts, sets, namespaces — all tables.</p>
+<pre data-lang="LUAU"><code><span class="tok-com">-- array-like</span>
+<span class="tok-kw">local</span> arr = {<span class="tok-str">"a"</span>, <span class="tok-str">"b"</span>, <span class="tok-str">"c"</span>}
+<span class="tok-fn">print</span>(arr[<span class="tok-num">1</span>])  <span class="tok-com">-- "a" (1-indexed)</span>
 
-        // Initial Boot
-        loadPosts('home');
-    </script>
+<span class="tok-com">-- dict-like</span>
+<span class="tok-kw">local</span> player = {
+    name = <span class="tok-str">"sakura"</span>,
+    hp   = <span class="tok-num">100</span>,
+    inv  = {<span class="tok-str">"sword"</span>, <span class="tok-str">"key"</span>},
+}
+
+<span class="tok-com">-- iteration: ipairs for arrays, pairs for dicts</span>
+<span class="tok-kw">for</span> k, v <span class="tok-kw">in</span> player <span class="tok-kw">do</span>
+    <span class="tok-fn">print</span>(k, v)
+<span class="tok-kw">end</span></code></pre>
+<p>Index from 1, not 0. Luau lets you drop <code>pairs/ipairs</code> in for-in loops.</p>
+` },
+L6: { crumb: "INTERMEDIATE · 06", title: "Metatables & OOP", html: `
+<p>A metatable on a table changes how the language treats it — index, newindex, arithmetic, calling, all overridable.</p>
+<pre data-lang="LUAU"><code><span class="tok-kw">local</span> Player = {}
+Player.<span class="tok-glob">__index</span> = Player
+
+<span class="tok-kw">function</span> Player.<span class="tok-fn">new</span>(name)
+    <span class="tok-kw">return</span> <span class="tok-fn">setmetatable</span>({ name = name, hp = <span class="tok-num">100</span> }, Player)
+<span class="tok-kw">end</span>
+
+<span class="tok-kw">function</span> Player:damage(n)
+    self.hp -= n
+<span class="tok-kw">end</span>
+
+<span class="tok-kw">local</span> p = Player.<span class="tok-fn">new</span>(<span class="tok-str">"sakura"</span>)
+p:damage(<span class="tok-num">15</span>)
+<span class="tok-fn">print</span>(p.hp) <span class="tok-com">-- 85</span></code></pre>
+<p>This is also exactly the technique exploits use to <i>read</i> Roblox internals — <code>getrawmetatable(game)</code> hands you the engine's metatable so you can hook <code>__namecall</code>.</p>
+` },
+L7: { crumb: "INTERMEDIATE · 07", title: "Coroutines & tasks", html: `
+<p>Lua has <code>coroutine.*</code>. Roblox added a faster, scheduler-aware <code>task</code> library. Use task for all the things.</p>
+<pre data-lang="LUAU"><code><span class="tok-fn">task</span>.<span class="tok-fn">spawn</span>(<span class="tok-kw">function</span>()
+    <span class="tok-kw">while</span> <span class="tok-kw">true</span> <span class="tok-kw">do</span>
+        <span class="tok-fn">print</span>(<span class="tok-fn">os</span>.<span class="tok-fn">time</span>())
+        <span class="tok-fn">task</span>.<span class="tok-fn">wait</span>(<span class="tok-num">1</span>)
+    <span class="tok-kw">end</span>
+<span class="tok-kw">end</span>)
+
+<span class="tok-fn">task</span>.<span class="tok-fn">defer</span>(myFn)   <span class="tok-com">-- run at end of frame</span>
+<span class="tok-fn">task</span>.<span class="tok-fn">delay</span>(<span class="tok-num">2</span>, myFn) <span class="tok-com">-- run in 2 seconds</span></code></pre>
+<p><code>task.wait</code> resolves on the next frame at minimum (~1/60s). Don't busy-loop without yielding — you'll freeze the client.</p>
+` },
+L8: { crumb: "ROBLOX API · 08", title: "Services & instances", html: `
+<p>Roblox is a tree of <code>Instance</code> objects rooted at <code>game</code>. You get top-level services with <code>:GetService()</code>.</p>
+<pre data-lang="LUAU"><code><span class="tok-kw">local</span> Players  = <span class="tok-fn">game</span>:<span class="tok-fn">GetService</span>(<span class="tok-str">"Players"</span>)
+<span class="tok-kw">local</span> Workspace = <span class="tok-fn">game</span>:<span class="tok-fn">GetService</span>(<span class="tok-str">"Workspace"</span>)
+<span class="tok-kw">local</span> Rs        = <span class="tok-fn">game</span>:<span class="tok-fn">GetService</span>(<span class="tok-str">"ReplicatedStorage"</span>)
+
+<span class="tok-kw">local</span> me = Players.<span class="tok-glob">LocalPlayer</span>
+<span class="tok-fn">print</span>(me.<span class="tok-glob">Name</span>, me.<span class="tok-glob">UserId</span>)</code></pre>
+<h4>Useful methods</h4>
+<ul class="tight">
+<li><code>:FindFirstChild(name)</code> / <code>:WaitForChild(name)</code></li>
+<li><code>:GetChildren()</code> / <code>:GetDescendants()</code></li>
+<li><code>:IsA("ClassName")</code></li>
+<li><code>.Changed</code>, <code>.ChildAdded</code>, <code>.AncestryChanged</code></li>
+</ul>
+` },
+L9: { crumb: "ROBLOX API · 09", title: "RemoteEvents", html: `
+<p>Client and server talk to each other through <code>RemoteEvent</code> (fire-and-forget) and <code>RemoteFunction</code> (request/response). As an exploiter, you don't run server scripts — but you can fire any remote the developers exposed.</p>
+<pre data-lang="LUAU"><code><span class="tok-kw">local</span> remote = <span class="tok-fn">game</span>.<span class="tok-glob">ReplicatedStorage</span>.<span class="tok-glob">Events</span>.<span class="tok-glob">Buy</span>
+remote:<span class="tok-fn">FireServer</span>(<span class="tok-str">"sword"</span>, <span class="tok-num">1</span>)
+
+<span class="tok-com">-- listening to one</span>
+<span class="tok-kw">local</span> reward = <span class="tok-fn">game</span>.<span class="tok-glob">ReplicatedStorage</span>.<span class="tok-glob">Events</span>.<span class="tok-glob">Reward</span>
+reward.<span class="tok-glob">OnClientEvent</span>:<span class="tok-fn">Connect</span>(<span class="tok-kw">function</span>(amount)
+    <span class="tok-fn">print</span>(<span class="tok-str">"got"</span>, amount)
+<span class="tok-kw">end</span>)</code></pre>
+<p>The remote-spy pattern in Lesson 12 is how you discover what arguments a remote actually takes.</p>
+` },
+L10: { crumb: "ROBLOX API · 10", title: "UserInputService", html: `
+<p>Listen to keys, mouse, touch — anywhere in the game.</p>
+<pre data-lang="LUAU"><code><span class="tok-kw">local</span> uis = <span class="tok-fn">game</span>:<span class="tok-fn">GetService</span>(<span class="tok-str">"UserInputService"</span>)
+
+uis.<span class="tok-glob">InputBegan</span>:<span class="tok-fn">Connect</span>(<span class="tok-kw">function</span>(input, processed)
+    <span class="tok-kw">if</span> processed <span class="tok-kw">then</span> <span class="tok-kw">return</span> <span class="tok-kw">end</span>  <span class="tok-com">-- typing in chat etc.</span>
+    <span class="tok-kw">if</span> input.<span class="tok-glob">KeyCode</span> == <span class="tok-fn">Enum</span>.<span class="tok-glob">KeyCode</span>.<span class="tok-glob">F</span> <span class="tok-kw">then</span>
+        <span class="tok-fn">print</span>(<span class="tok-str">"f pressed"</span>)
+    <span class="tok-kw">end</span>
+<span class="tok-kw">end</span>)</code></pre>
+<p>Almost every UI script ever made hangs off this. Toggle keys, hotkeys, on-screen menus — all live here.</p>
+` },
+L11: { crumb: "EXPLOIT · 11", title: "The exploit globals", html: `
+<p>An executor injects extra globals you can use anywhere. They're not in vanilla Roblox — game scripts can't call them.</p>
+<h4>Identity / sanity</h4>
+<ul class="tight">
+<li><code>identifyexecutor()</code> — name + version</li>
+<li><code>checkcaller()</code> — true if your script is the caller</li>
+<li><code>iscclosure(fn)</code>, <code>islclosure(fn)</code> — what kind of function</li>
+</ul>
+<h4>HTTP</h4>
+<pre data-lang="LUAU"><code><span class="tok-kw">local</span> body = <span class="tok-fn">request</span>({
+    <span class="tok-glob">Url</span>    = <span class="tok-str">"https://example.com/api"</span>,
+    <span class="tok-glob">Method</span> = <span class="tok-str">"GET"</span>,
+})
+<span class="tok-fn">print</span>(body.<span class="tok-glob">StatusCode</span>, body.<span class="tok-glob">Body</span>)</code></pre>
+<h4>Filesystem (sandboxed)</h4>
+<pre data-lang="LUAU"><code><span class="tok-fn">writefile</span>(<span class="tok-str">"tuff/notes.txt"</span>, <span class="tok-str">"hello"</span>)
+<span class="tok-kw">local</span> txt = <span class="tok-fn">readfile</span>(<span class="tok-str">"tuff/notes.txt"</span>)</code></pre>
+<p>Files live in your executor's workspace folder. Useful for caching keys, configs, telemetry-free settings.</p>
+` },
+L12: { crumb: "EXPLOIT · 12", title: "Hooking functions", html: `
+<p>Replace a function's behavior, optionally call the original, optionally lie about the result.</p>
+<pre data-lang="LUAU"><code><span class="tok-kw">local</span> Players = <span class="tok-fn">game</span>:<span class="tok-fn">GetService</span>(<span class="tok-str">"Players"</span>)
+<span class="tok-kw">local</span> me      = Players.<span class="tok-glob">LocalPlayer</span>
+
+<span class="tok-com">-- always look idle to the server's idle-detector</span>
+<span class="tok-kw">local</span> origIdled
+origIdled = <span class="tok-fn">hookfunction</span>(me.<span class="tok-glob">Idled</span>.<span class="tok-glob">Connect</span>, <span class="tok-fn">newcclosure</span>(<span class="tok-kw">function</span>(...)
+    <span class="tok-kw">return</span>  <span class="tok-com">-- swallow the connection silently</span>
+<span class="tok-kw">end</span>))</code></pre>
+<p>Patterns:</p>
+<ul class="tight">
+<li><b>Pre-hook</b> — inspect args, then call original.</li>
+<li><b>Post-hook</b> — call original, modify result.</li>
+<li><b>Replace</b> — return your own value, never call the original.</li>
+<li><b>Conditional</b> — call original only when caller is the game (<code>not checkcaller()</code>).</li>
+</ul>
+<p>Always wrap your replacement in <code>newcclosure</code> when hooking C functions, or you risk crashing.</p>
+` },
+L13: { crumb: "EXPLOIT · 13", title: "getconnections", html: `
+<p>Every <code>:Connect()</code> call returns a connection. Roblox doesn't let game scripts list them — but executors do, via <code>getconnections(signal)</code>.</p>
+<pre data-lang="LUAU"><code><span class="tok-kw">local</span> remote = <span class="tok-fn">game</span>.<span class="tok-glob">ReplicatedStorage</span>.<span class="tok-glob">Events</span>.<span class="tok-glob">AntiCheat</span>
+
+<span class="tok-kw">for</span> _, conn <span class="tok-kw">in</span> <span class="tok-fn">getconnections</span>(remote.<span class="tok-glob">OnClientEvent</span>) <span class="tok-kw">do</span>
+    conn:<span class="tok-fn">Disable</span>()  <span class="tok-com">-- or :Fire(...) to spoof, or :Replace(fn)</span>
+<span class="tok-kw">end</span></code></pre>
+<p>Disable kills client-side anti-cheat hooks. Replace lets you redirect them. Fire lets you replay arguments.</p>
+` },
+L14: { crumb: "EXPLOIT · 14", title: "Building a UI library", html: `
+<p>You'll see public libraries (Rayfield, Kavo, OrionLib, Linoria) used everywhere because they save dozens of hours. Eventually you'll write your own. The minimum:</p>
+<ul class="tight">
+<li>A <code>ScreenGui</code> parented to <code>CoreGui</code> (use <code>gethui()</code> if available — it's hidden from the game).</li>
+<li>Draggable window frame.</li>
+<li>Reusable Toggle / Slider / Button / Dropdown / Keybind components.</li>
+<li>Settings persistence via <code>writefile</code> + JSON.</li>
+</ul>
+<pre data-lang="LUAU"><code><span class="tok-kw">local</span> screen = <span class="tok-fn">Instance</span>.<span class="tok-fn">new</span>(<span class="tok-str">"ScreenGui"</span>)
+screen.<span class="tok-glob">Name</span>      = <span class="tok-str">"tuff_ui"</span>
+screen.<span class="tok-glob">ResetOnSpawn</span> = <span class="tok-kw">false</span>
+screen.<span class="tok-glob">Parent</span>    = (<span class="tok-fn">gethui</span> <span class="tok-kw">and</span> <span class="tok-fn">gethui</span>()) <span class="tok-kw">or</span> <span class="tok-fn">game</span>.<span class="tok-glob">CoreGui</span>
+
+<span class="tok-kw">local</span> frame = <span class="tok-fn">Instance</span>.<span class="tok-fn">new</span>(<span class="tok-str">"Frame"</span>)
+frame.<span class="tok-glob">Size</span>             = <span class="tok-fn">UDim2</span>.<span class="tok-fn">fromOffset</span>(<span class="tok-num">320</span>, <span class="tok-num">220</span>)
+frame.<span class="tok-glob">Position</span>         = <span class="tok-fn">UDim2</span>.<span class="tok-fn">fromOffset</span>(<span class="tok-num">80</span>, <span class="tok-num">80</span>)
+frame.<span class="tok-glob">BackgroundColor3</span> = <span class="tok-fn">Color3</span>.<span class="tok-fn">fromRGB</span>(<span class="tok-num">17</span>, <span class="tok-num">22</span>, <span class="tok-num">31</span>)
+frame.<span class="tok-glob">Parent</span>           = screen</code></pre>
+<p>From there it's just composition. Read Linoria's source for inspiration — it's the most-copied UI lib in the scene.</p>
+` },
+};
+
+/* === TABS === */
+const tabs = document.querySelectorAll('.nav a[data-tab]');
+const sections = document.querySelectorAll('.section');
+function showTab(name) {
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+    sections.forEach(s => s.classList.toggle('active', s.id === name));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+tabs.forEach(t => t.addEventListener('click', () => showTab(t.dataset.tab)));
+document.querySelectorAll('[data-go]').forEach(a => {
+    a.addEventListener('click', () => showTab(a.dataset.go));
+});
+
+/* === LESSON RENDER === */
+const lessonList = document.getElementById('luau-list');
+const lessonBody = document.getElementById('luau-body');
+function showLesson(id) {
+    const L = LESSONS[id];
+    if (!L) return;
+    lessonBody.innerHTML = `<div class="breadcrumb">${L.crumb}</div><h2>${L.title}</h2>${L.html}`;
+    lessonList.querySelectorAll('li[data-lesson]').forEach(li => {
+        li.classList.toggle('active', li.dataset.lesson === id);
+    });
+}
+lessonList.querySelectorAll('li[data-lesson]').forEach(li => {
+    li.addEventListener('click', () => showLesson(li.dataset.lesson));
+});
+showLesson('L1');
+
+/* === EXECUTORS === */
+const grid = document.getElementById('exec-grid');
+const search = document.getElementById('exec-search');
+let activeFilter = 'all';
+
+function statusBadge(s) {
+    if (s === 'up')   return '<span class="badge up">UP</span>';
+    if (s === 'down') return '<span class="badge down">DOWN</span>';
+    if (s === 'dmca') return '<span class="badge dmca">DMCA</span>';
+    return '<span class="badge dev">DEV</span>';
+}
+
+function renderExecs() {
+    const q = search.value.toLowerCase().trim();
+    let data = EXECUTORS.filter(e => {
+        if (q && !(e.name.toLowerCase().includes(q) ||
+                   e.desc.toLowerCase().includes(q) ||
+                   e.tags.some(t => t.toLowerCase().includes(q)))) return false;
+        if (activeFilter === 'all') return true;
+        if (['up','down','dmca'].includes(activeFilter)) return e.status === activeFilter;
+        if (activeFilter === 'pc')     return e.platform.includes('PC');
+        if (activeFilter === 'mobile') return e.platform.includes('Mobile');
+        if (activeFilter === 'mac')    return e.platform.includes('Mac');
+        return true;
+    });
+
+    if (data.length === 0) {
+        grid.innerHTML = '<div style="color:var(--dim);grid-column:1/-1;text-align:center;padding:40px;">no executors match.</div>';
+        return;
+    }
+
+    grid.innerHTML = data.map(e => `
+        <div class="exec-card ${e.status}">
+            <div class="exec-head">
+                <div>
+                    <div class="exec-name">${e.name}</div>
+                    <div class="exec-meta">${e.platform.join(' · ')} &nbsp;·&nbsp; ${e.price} &nbsp;·&nbsp; Lvl ${e.level}</div>
+                </div>
+                ${statusBadge(e.status)}
+            </div>
+            <div class="exec-desc">${e.desc}</div>
+            <div class="exec-tags">${e.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+            <div class="exec-foot">
+                <span>updated ${e.updated}</span>
+                <span>${e.status === 'up' ? '● live' : e.status === 'dmca' ? '● removed' : '● offline'}</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+document.querySelectorAll('.filter-pill').forEach(p => {
+    p.addEventListener('click', () => {
+        document.querySelectorAll('.filter-pill').forEach(x => x.classList.remove('active'));
+        p.classList.add('active');
+        activeFilter = p.dataset.filter;
+        renderExecs();
+    });
+});
+search.addEventListener('input', renderExecs);
+renderExecs();
+
+/* === STATS === */
+document.getElementById('stat-total').textContent = EXECUTORS.length;
+document.getElementById('stat-up').textContent    = EXECUTORS.filter(e => e.status === 'up').length;
+document.getElementById('stat-down').textContent  = EXECUTORS.filter(e => e.status === 'dmca' || e.status === 'down').length;
+</script>
+
 </body>
 </html>
