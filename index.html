@@ -1,1 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLACKBIRD // VOID TERMINAL</title>
+    <style>
+        /* === THE SKIN (CSS) === */
+        :root {
+            --bg-color: #050505;
+            --main-red: #ff0000;
+            --dark-red: #8a0000;
+            --text-color: #e0e0e0;
+        }
 
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Courier New', Courier, monospace; /* Hacker aesthetic */
+            margin: 0;
+            padding: 20px;
+            background-image: radial-gradient(circle at center, #110000 0%, #000 100%);
+            min-height: 100vh;
+        }
+
+        /* Glitch Title */
+        h1 {
+            color: var(--main-red);
+            text-align: center;
+            text-shadow: 2px 2px 10px var(--main-red);
+            letter-spacing: 5px;
+            font-size: 40px;
+            text-transform: uppercase;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* The Post Creation Box */
+        .post-form {
+            background: #0a0a0a;
+            border: 1px solid var(--dark-red);
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+        }
+
+        input, textarea {
+            width: 100%;
+            background: #000;
+            color: var(--main-red);
+            border: 1px solid var(--dark-red);
+            padding: 10px;
+            margin-bottom: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            box-sizing: border-box;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--main-red);
+            box-shadow: 0 0 10px var(--dark-red);
+        }
+
+        button {
+            background: #000;
+            color: var(--main-red);
+            border: 2px solid var(--main-red);
+            padding: 10px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        button:hover {
+            background: var(--main-red);
+            color: #000;
+            box-shadow: 0 0 20px var(--main-red);
+        }
+
+        /* The Feed / Classic 4chan Style Posts */
+        .post {
+            background: #0f0f0f;
+            border-left: 4px solid var(--main-red);
+            padding: 15px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .post-header {
+            font-size: 14px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+
+        .post-name {
+            color: var(--main-red);
+            font-weight: bold;
+        }
+
+        .post-date {
+            color: #666;
+            margin-left: 10px;
+        }
+
+        .post-content {
+            font-size: 16px;
+            line-height: 1.5;
+            white-space: pre-wrap; /* Keeps line breaks */
+        }
+
+        /* Stats Bar */
+        .stats {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>[ BLACKBIRD CLAN ]</h1>
+        <div class="stats" id="stat-counter">TOTAL POSTS IN THE VOID: 0</div>
+
+        <div class="post-form">
+            <input type="text" id="usernameInput" placeholder="ENTER CODENAME..." maxlength="20">
+            <textarea id="postInput" rows="4" placeholder="TRANSMIT MESSAGE TO THE BOARD..."></textarea>
+            <button onclick="submitPost()">[ UPLOAD DATA ]</button>
+            <button onclick="clearBoard()" style="border-color: #555; color: #555; float: right;">[ PURGE SYSTEM ]</button>
+        </div>
+
+        <div id="board">
+            </div>
+    </div>
+
+    <script>
+        /* === THE SCRIPTS (JAVASCRIPT) === */
+        
+        // 1. Get the board container and stats element
+        const board = document.getElementById('board');
+        const statCounter = document.getElementById('stat-counter');
+
+        // 2. Load posts from LocalStorage (This is how it survives a refresh!)
+        // If there are no posts yet, start with an empty array []
+        let posts = JSON.parse(localStorage.getItem('blackbird_data')) || [];
+
+        // 3. Function to draw the posts on the screen
+        function renderBoard() {
+            board.innerHTML = ''; // Clear the board first
+            statCounter.innerText = "TOTAL POSTS IN THE VOID: " + posts.length;
+
+            // Loop through the posts backward so the newest is at the top
+            for (let i = posts.length - 1; i >= 0; i--) {
+                const p = posts[i];
+                
+                // Create the HTML structure for a single post
+                const postHTML = `
+                    <div class="post">
+                        <div class="post-header">
+                            <span class="post-name">>${p.name}</span>
+                            <span class="post-date">[ ${p.date} ]</span>
+                            <span style="float:right; color:#444;">No.${100000 + i}</span>
+                        </div>
+                        <div class="post-content">${p.content}</div>
+                    </div>
+                `;
+                board.innerHTML += postHTML;
+            }
+        }
+
+        // 4. Function to handle the Upload button
+        function submitPost() {
+            let nameVal = document.getElementById('usernameInput').value;
+            let contentVal = document.getElementById('postInput').value;
+
+            // Stop them from posting blank stuff
+            if (contentVal.trim() === "") {
+                alert("ERROR: CANNOT TRANSMIT EMPTY DATA.");
+                return;
+            }
+
+            // If they don't put a name, make them Anonymous
+            if (nameVal.trim() === "") {
+                nameVal = "Anonymous User";
+            }
+
+            // Get current time
+            const now = new Date();
+            const timeString = now.toLocaleDateString() + " " + now.toLocaleTimeString();
+
+            // Create a new post object
+            const newPost = {
+                name: nameVal,
+                content: contentVal,
+                date: timeString
+            };
+
+            // Add it to our array
+            posts.push(newPost);
+
+            // Save the new array to the browser's LocalStorage
+            localStorage.setItem('blackbird_data', JSON.stringify(posts));
+
+            // Clear the text box
+            document.getElementById('postInput').value = "";
+
+            // Redraw the board to show the new post
+            renderBoard();
+        }
+
+        // 5. Secret function to clear the board (for the Dev only)
+        function clearBoard() {
+            if (confirm("WARNING: PURGE ENTIRE SYSTEM DATABASE?")) {
+                posts = [];
+                localStorage.removeItem('blackbird_data');
+                renderBoard();
+            }
+        }
+
+        // 6. Run this instantly when the page loads
+        renderBoard();
+    </script>
+</body>
+</html>
