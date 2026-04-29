@@ -3,256 +3,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>/sakura/ - 4sakura</title>
+    <title>/sakura/ - 4sakura Board</title>
     <style>
-        /* === THE 4SAKURA SYSTEM (400+ lines potential) === */
+        /* === 4SAKURA ULTIMATE STYLING === */
         :root {
-            --sakura-pink: #ffdae9;
-            --sakura-border: #f8bbd0;
-            --sakura-text: #880e4f;
-            --sakura-bg: #fff5f8;
-            --post-bg: #fce4ec;
+            --sakura-pink-light: #fff0f6;
+            --sakura-pink-mid: #ffdeeb;
+            --sakura-pink-dark: #f06292;
+            --sakura-text: #4a001f;
+            --sakura-accent: #d81b60;
+            --aura-glow: 0 0 15px rgba(255, 182, 193, 0.6);
         }
 
+        /* Aura Background Animation */
         body {
-            background-color: var(--sakura-bg);
+            background-color: var(--sakura-pink-light);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.8) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(255, 192, 203, 0.4) 0%, transparent 30%);
             color: var(--sakura-text);
-            font-family: arial,helvetica,sans-serif;
-            font-size: 13px;
+            font-family: "Trebuchet MS", Helvetica, sans-serif;
             margin: 0;
-            padding: 10px;
+            padding: 15px;
+            line-height: 1.4;
         }
 
-        /* Top Navigation Bar */
-        .nav-bar {
-            background: var(--sakura-pink);
-            border-bottom: 1px solid var(--sakura-border);
-            padding: 5px;
+        /* Top Navigation */
+        .top-nav {
+            background: var(--sakura-pink-mid);
+            border: 1px solid var(--sakura-pink-dark);
+            padding: 8px;
+            font-size: 12px;
+            text-align: center;
+            box-shadow: var(--aura-glow);
             margin-bottom: 20px;
+        }
+
+        .top-nav a {
+            text-decoration: none;
+            color: var(--sakura-accent);
+            font-weight: bold;
+            margin: 0 15px;
+            transition: 0.2s;
+        }
+
+        .top-nav a:hover { color: #fff; background: var(--sakura-accent); padding: 5px; border-radius: 4px; }
+
+        header { text-align: center; margin: 40px 0; }
+        
+        header h1 {
+            font-size: 48px;
+            color: var(--sakura-accent);
+            text-shadow: 3px 3px 0px #fff;
+            margin: 0;
+        }
+
+        /* Search & Catalog Controls */
+        .controls {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid var(--sakura-pink-mid);
+            max-width: 600px;
+            margin: 0 auto 30px auto;
             text-align: center;
         }
 
-        .nav-bar a {
-            color: var(--sakura-text);
-            text-decoration: none;
-            font-weight: bold;
-            padding: 0 10px;
-            cursor: pointer;
+        /* Post Creation Interface */
+        .post-uploader {
+            display: none; /* Toggled by JS */
+            background: #fff;
+            border: 2px solid var(--sakura-accent);
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            margin: 20px auto;
+            box-shadow: 10px 10px 0px var(--sakura-pink-mid);
         }
 
-        .nav-bar a:hover { text-decoration: underline; }
-
-        header { text-align: center; margin-bottom: 20px; }
-
-        h1 {
-            color: #d81b60;
-            font-size: 28px;
-            margin: 5px;
-        }
-
-        /* Post Creation Section */
-        #upload-section {
-            display: block;
-            background: var(--post-bg);
-            border: 1px solid var(--sakura-border);
-            width: fit-content;
-            margin: 0 auto 30px auto;
+        input[type="text"], textarea, input[type="file"] {
+            width: 100%;
+            margin-bottom: 15px;
             padding: 10px;
+            border: 1px solid var(--sakura-pink-dark);
+            box-sizing: border-box;
         }
 
-        .post-form-table td { padding: 2px; }
-
-        input, textarea {
-            border: 1px solid var(--sakura-border);
-            padding: 2px;
+        .submit-btn {
+            background: var(--sakura-accent);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
         }
 
         /* The Board Layout */
-        .board { margin-top: 20px; }
+        .post-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
 
-        .post {
-            display: inline-block;
-            background: var(--post-bg);
-            border: 1px solid var(--sakura-border);
-            margin: 5px;
+        .thread-post {
+            background: #fdf2f7;
+            border: 1px solid var(--sakura-pink-dark);
+            padding: 10px;
+            width: 100%;
+            max-width: 700px;
+            min-height: 160px;
+            box-shadow: 3px 3px 0px var(--sakura-pink-mid);
+        }
+
+        .post-info {
+            background: var(--sakura-pink-mid);
             padding: 5px;
-            vertical-align: top;
-            width: 95%; /* Mobile friendly, Desktop clean */
-            max-width: 800px;
-        }
-
-        .post-header {
             font-size: 11px;
-            color: #555;
-            margin-bottom: 5px;
-            background: var(--sakura-pink);
-            padding: 3px;
+            margin-bottom: 10px;
         }
 
-        .poster-name { color: #117743; font-weight: bold; }
+        .subject { color: #cc1105; font-weight: bold; font-size: 14px; }
+        .name { color: #117743; font-weight: bold; }
 
-        /* Small Uniform Image System */
-        .img-container {
+        /* Thumbnails */
+        .thumb-box {
             float: left;
-            margin: 5px 20px 5px 5px;
+            margin-right: 20px;
         }
 
-        .post-image {
-            width: 150px; /* Small and uniform */
+        .thumbnail {
+            width: 150px;
             height: 150px;
-            object-fit: cover; /* Keeps them the same size without stretching */
-            border: 1px solid var(--sakura-border);
-            cursor: pointer;
+            object-fit: cover;
+            border: 1px solid var(--sakura-pink-dark);
+            background: #fff;
         }
 
-        .post-content {
-            font-size: 14px;
-            word-wrap: break-word;
-        }
+        .post-text { font-size: 14px; color: #333; }
 
-        .search-bar {
+        /* Footer Stats */
+        footer {
             text-align: center;
-            margin-bottom: 20px;
+            margin-top: 50px;
+            font-size: 12px;
+            color: var(--sakura-pink-dark);
         }
 
-        .hidden { display: none; }
+        .glow-dot {
+            height: 10px;
+            width: 10px;
+            background-color: #ff0080;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px #ff0080;
+        }
     </style>
 </head>
 <body>
 
-    <div class="nav-bar">
-        [ <a onclick="showSection('home')">Home</a> / 
-        <a onclick="showSection('upload')">Upload</a> / 
-        <a onclick="showSection('recent')">Recent</a> / 
-        <a onclick="showSection('popular')">Popular</a> ]
+    <div class="top-nav">
+        [ <a href="#" onclick="changeView('recent')">Recent</a> / 
+        <a href="#" onclick="changeView('popular')">Most Popular</a> / 
+        <a href="#" onclick="toggleUpload()">Upload New Post</a> ]
     </div>
 
     <header>
         <h1>4sakura</h1>
-        <div id="sub-title">/sakura/ - Dominus Aura Discussion</div>
+        <span>Dominus Aura Board - Ver. 3.9GHz</span>
     </header>
 
-    <div class="search-bar">
-        Search for post: <input type="text" id="searchInput" onkeyup="filterPosts()" placeholder="Type keywords...">
+    <div class="controls">
+        <b>Search Terminal:</b> 
+        <input type="text" id="searchBar" onkeyup="searchEngine()" placeholder="Filter the sakura stream..." style="width: 60%; margin: 0;">
     </div>
 
-    <div id="upload-section" class="hidden">
-        <table class="post-form-table">
-            <tr>
-                <td><b>Name</b></td>
-                <td><input type="text" id="posterName" placeholder="Anonymous"></td>
-            </tr>
-            <tr>
-                <td><b>Subject</b></td>
-                <td><input type="text" id="postSubject" placeholder="Title"></td>
-            </tr>
-            <tr>
-                <td><b>Comment</b></td>
-                <td><textarea id="postComment" rows="4" cols="40"></textarea></td>
-            </tr>
-            <tr>
-                <td><b>File</b></td>
-                <td><input type="file" id="postFile" accept="image/*"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><button onclick="submitPost()">Post</button></td>
-            </tr>
-        </table>
+    <div id="postUploader" class="post-uploader">
+        <h3 style="margin-top:0; color:var(--sakura-accent)">CREATE NEW DATA STREAM</h3>
+        <input type="text" id="formSubject" placeholder="Post Title (Subject)">
+        <input type="text" id="formName" placeholder="Your Name (Optional)">
+        <textarea id="formComment" rows="5" placeholder="Your Message..."></textarea>
+        <input type="file" id="formFile" accept="image/*">
+        <button class="submit-btn" onclick="executePost()">TRANSMIT TO BOARD</button>
     </div>
 
-    <hr>
-
-    <div id="board" class="board">
+    <div id="boardFeed" class="post-container">
         </div>
 
-    <script>
-        let posts = JSON.parse(localStorage.getItem('4sakura_data')) || [];
+    <footer>
+        <span class="glow-dot"></span> 4SAKURA SYSTEM ONLINE - REFRESH TO SYNC DATA
+    </footer>
 
-        function showSection(type) {
-            const uploadBox = document.getElementById('upload-section');
-            const boardTitle = document.getElementById('sub-title');
-            
-            uploadBox.classList.add('hidden');
-            
-            if (type === 'upload') {
-                uploadBox.classList.remove('hidden');
-                boardTitle.innerText = "Upload Data to the Board";
-            } else if (type === 'popular') {
-                boardTitle.innerText = "Most Popular Uploads (All Time)";
-                renderBoard(posts.slice().sort((a,b) => b.views - a.views));
-            } else if (type === 'recent') {
-                boardTitle.innerText = "Most Recent Posts";
-                renderBoard(posts);
-            } else {
-                boardTitle.innerText = "/sakura/ - Dominus Aura Discussion";
-                renderBoard(posts);
-            }
+    <script>
+        /* === 4SAKURA CORE ENGINE === */
+        let sakuraData = JSON.parse(localStorage.getItem('4sakura_master_v3')) || [];
+
+        function toggleUpload() {
+            const box = document.getElementById('postUploader');
+            box.style.display = (box.style.display === 'block') ? 'none' : 'block';
         }
 
-        async function submitPost() {
-            const name = document.getElementById('posterName').value || "Anonymous";
-            const subject = document.getElementById('postSubject').value || "Untitled";
-            const comment = document.getElementById('postComment').value;
-            const file = document.getElementById('postFile').files[0];
+        async function executePost() {
+            const subject = document.getElementById('formSubject').value || "Untitled";
+            const name = document.getElementById('formName').value || "Anonymous";
+            const comment = document.getElementById('formComment').value;
+            const file = document.getElementById('formFile').files[0];
 
-            let imgData = "";
+            if (!comment && !file) return alert("Error: Post must contain text or image.");
+
+            let b64 = "";
             if (file) {
-                imgData = await new Promise(res => {
+                b64 = await new Promise(r => {
                     const reader = new FileReader();
-                    reader.onload = () => res(reader.result);
+                    reader.onload = () => r(reader.result);
                     reader.readAsDataURL(file);
                 });
             }
 
-            const newPost = {
-                name: name,
+            const postObj = {
+                id: Math.floor(Math.random() * 900000) + 100000,
                 subject: subject,
+                name: name,
                 comment: comment,
-                img: imgData,
-                date: new Date().toLocaleString(),
-                views: Math.floor(Math.random() * 100), // Random popularity for demo
-                id: Date.now()
+                img: b64,
+                time: new Date().toLocaleString(),
+                popularity: 0
             };
 
-            posts.unshift(newPost); // Add to top
-            localStorage.setItem('4sakura_data', JSON.stringify(posts));
-            document.getElementById('postComment').value = "";
-            document.getElementById('postFile').value = "";
-            showSection('home');
+            sakuraData.unshift(postObj);
+            localStorage.setItem('4sakura_master_v3', JSON.stringify(sakuraData));
+            
+            // Reset Form
+            document.getElementById('formSubject').value = '';
+            document.getElementById('formComment').value = '';
+            document.getElementById('formFile').value = '';
+            toggleUpload();
+            renderBoard(sakuraData);
         }
 
-        function filterPosts() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = posts.filter(p => p.comment.toLowerCase().includes(query) || p.subject.toLowerCase().includes(query));
+        function searchEngine() {
+            const q = document.getElementById('searchBar').value.toLowerCase();
+            const filtered = sakuraData.filter(p => 
+                p.comment.toLowerCase().includes(q) || 
+                p.subject.toLowerCase().includes(q)
+            );
             renderBoard(filtered);
         }
 
-        function renderBoard(dataArray) {
-            const board = document.getElementById('board');
-            board.innerHTML = '';
+        function changeView(type) {
+            if (type === 'popular') {
+                const sorted = [...sakuraData].sort((a,b) => b.id - a.id); // Fake popularity logic
+                renderBoard(sorted);
+            } else {
+                renderBoard(sakuraData);
+            }
+        }
 
-            dataArray.forEach(p => {
-                const imgHTML = p.img ? `<div class="img-container"><img class="post-image" src="${p.img}"></div>` : '';
+        function renderBoard(arr) {
+            const container = document.getElementById('boardFeed');
+            container.innerHTML = '';
+
+            arr.forEach(p => {
+                const imgPart = p.img ? `<div class="thumb-box"><img src="${p.img}" class="thumbnail"></div>` : '';
                 
-                const postHTML = `
-                    <div class="post">
-                        <div class="post-header">
-                            <b>${p.subject}</b> 
-                            <span class="poster-name">${p.name}</span> 
-                            ${p.date} No.${p.id}
+                container.innerHTML += `
+                    <div class="thread-post">
+                        <div class="post-info">
+                            <span class="subject">${p.subject}</span> 
+                            By <span class="name">${p.name}</span> 
+                            at ${p.time} No.${p.id}
                         </div>
-                        ${imgHTML}
-                        <div class="post-content">${p.comment}</div>
+                        ${imgPart}
+                        <div class="post-text">${p.comment}</div>
                     </div>
-                    <br clear="left">
                 `;
-                board.innerHTML += postHTML;
             });
         }
 
-        // Initialize
-        renderBoard(posts);
+        // Run on load
+        renderBoard(sakuraData);
     </script>
 </body>
 </html>
