@@ -3,228 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BLACKBIRD // VOID TERMINAL</title>
+    <title>Dominus Aura // Community Board</title>
     <style>
-        /* === THE SKIN (CSS) === */
+        /* === THE AURA DESIGN (CSS) === */
         :root {
-            --bg-color: #050505;
-            --main-red: #ff0000;
-            --dark-red: #8a0000;
-            --text-color: #e0e0e0;
+            --primary-pink: #ffafcc;
+            --soft-pink: #fde2e4;
+            --accent-glow: #ffc8dd;
+            --text-main: #5c5c5c;
+            --white: #ffffff;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Courier New', Courier, monospace; /* Hacker aesthetic */
+            background-color: #fff5f6;
+            background-image: linear-gradient(135deg, #fff5f6 0%, #fde2e4 100%);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 20px;
-            background-image: radial-gradient(circle at center, #110000 0%, #000 100%);
+            padding: 0;
             min-height: 100vh;
         }
 
-        /* Glitch Title */
-        h1 {
-            color: var(--main-red);
+        /* Header / Logo Area */
+        header {
+            background: var(--white);
+            padding: 30px;
             text-align: center;
-            text-shadow: 2px 2px 10px var(--main-red);
-            letter-spacing: 5px;
-            font-size: 40px;
+            border-bottom: 4px solid var(--primary-pink);
+            box-shadow: 0 4px 15px rgba(255, 175, 204, 0.3);
+        }
+
+        h1 {
+            margin: 0;
+            color: #ff85a1;
+            font-size: 32px;
+            letter-spacing: 2px;
             text-transform: uppercase;
+            text-shadow: 2px 2px 0px var(--soft-pink);
         }
 
         .container {
-            max-width: 800px;
-            margin: 0 auto;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
         }
 
-        /* The Post Creation Box */
-        .post-form {
-            background: #0a0a0a;
-            border: 1px solid var(--dark-red);
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+        /* Posting Box */
+        .post-box {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            border: 1px solid var(--soft-pink);
         }
 
-        input, textarea {
+        .input-group { margin-bottom: 15px; }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #ff85a1;
+        }
+
+        input[type="text"], textarea {
             width: 100%;
-            background: #000;
-            color: var(--main-red);
-            border: 1px solid var(--dark-red);
-            padding: 10px;
-            margin-bottom: 10px;
-            font-family: 'Courier New', Courier, monospace;
+            padding: 12px;
+            border: 2px solid var(--soft-pink);
+            border-radius: 8px;
             box-sizing: border-box;
+            font-size: 14px;
+            transition: 0.3s;
         }
 
         input:focus, textarea:focus {
             outline: none;
-            border-color: var(--main-red);
-            box-shadow: 0 0 10px var(--dark-red);
+            border-color: var(--primary-pink);
+            background: #fff;
+        }
+
+        /* Custom File Upload */
+        .file-upload {
+            background: var(--soft-pink);
+            padding: 10px;
+            border-radius: 8px;
+            display: inline-block;
+            cursor: pointer;
+            color: #ff85a1;
+            font-weight: bold;
+            margin-bottom: 10px;
         }
 
         button {
-            background: #000;
-            color: var(--main-red);
-            border: 2px solid var(--main-red);
-            padding: 10px 20px;
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
             font-weight: bold;
+            font-size: 16px;
             cursor: pointer;
-            transition: 0.2s;
-            font-family: 'Courier New', Courier, monospace;
+            transition: 0.3s;
+            display: block;
+            width: 100%;
         }
 
         button:hover {
-            background: var(--main-red);
-            color: #000;
-            box-shadow: 0 0 20px var(--main-red);
+            background: #ff85a1;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 133, 161, 0.4);
         }
 
-        /* The Feed / Classic 4chan Style Posts */
-        .post {
-            background: #0f0f0f;
-            border-left: 4px solid var(--main-red);
-            padding: 15px;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .post-header {
-            font-size: 14px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 5px;
-        }
-
-        .post-name {
-            color: var(--main-red);
-            font-weight: bold;
-        }
-
-        .post-date {
-            color: #666;
-            margin-left: 10px;
-        }
-
-        .post-content {
-            font-size: 16px;
-            line-height: 1.5;
-            white-space: pre-wrap; /* Keeps line breaks */
-        }
-
-        /* Stats Bar */
+        /* Stats bar */
         .stats {
             text-align: center;
-            color: #666;
+            font-weight: bold;
+            color: #ff85a1;
             margin-bottom: 20px;
-            font-size: 14px;
         }
+
+        /* THE FEED */
+        .feed { display: grid; gap: 20px; }
+
+        .post {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--soft-pink);
+            transition: 0.3s;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .post-meta {
+            font-size: 12px;
+            color: #bbb;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .post-user { color: #ff85a1; font-weight: bold; font-size: 14px; }
+
+        .post-body { font-size: 15px; line-height: 1.6; }
+
+        .uploaded-img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: block;
+            border: 2px solid var(--soft-pink);
+        }
+
+        /* Scrollbar fix */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--white); }
+        ::-webkit-scrollbar-thumb { background: var(--primary-pink); border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>[ BLACKBIRD CLAN ]</h1>
-        <div class="stats" id="stat-counter">TOTAL POSTS IN THE VOID: 0</div>
+<header>
+    <h1>✨ Dominus Aura Board ✨</h1>
+</header>
 
-        <div class="post-form">
-            <input type="text" id="usernameInput" placeholder="ENTER CODENAME..." maxlength="20">
-            <textarea id="postInput" rows="4" placeholder="TRANSMIT MESSAGE TO THE BOARD..."></textarea>
-            <button onclick="submitPost()">[ UPLOAD DATA ]</button>
-            <button onclick="clearBoard()" style="border-color: #555; color: #555; float: right;">[ PURGE SYSTEM ]</button>
+<div class="container">
+    <div class="stats" id="activeCounter">0 TRANSMISSIONS LOGGED</div>
+
+    <div class="post-box">
+        <div class="input-group">
+            <label>Username</label>
+            <input type="text" id="userInput" placeholder="Enter your display name...">
         </div>
-
-        <div id="board">
-            </div>
+        <div class="input-group">
+            <label>Message</label>
+            <textarea id="msgInput" rows="3" placeholder="Share your thoughts..."></textarea>
+        </div>
+        <div class="input-group">
+            <label>Image Attachment</label>
+            <input type="file" id="fileInput" accept="image/*">
+        </div>
+        <button onclick="createPost()">POST TO AURA</button>
     </div>
 
-    <script>
-        /* === THE SCRIPTS (JAVASCRIPT) === */
-        
-        // 1. Get the board container and stats element
-        const board = document.getElementById('board');
-        const statCounter = document.getElementById('stat-counter');
+    <div id="feed" class="feed">
+        </div>
+</div>
 
-        // 2. Load posts from LocalStorage (This is how it survives a refresh!)
-        // If there are no posts yet, start with an empty array []
-        let posts = JSON.parse(localStorage.getItem('blackbird_data')) || [];
+<script>
+    /* === AURA ENGINE (JS) === */
+    const feed = document.getElementById('feed');
+    const counter = document.getElementById('activeCounter');
+    
+    // Load existing posts
+    let auraPosts = JSON.parse(localStorage.getItem('aura_board_v2')) || [];
 
-        // 3. Function to draw the posts on the screen
-        function renderBoard() {
-            board.innerHTML = ''; // Clear the board first
-            statCounter.innerText = "TOTAL POSTS IN THE VOID: " + posts.length;
+    function savePosts() {
+        localStorage.setItem('aura_board_v2', JSON.stringify(auraPosts));
+    }
 
-            // Loop through the posts backward so the newest is at the top
-            for (let i = posts.length - 1; i >= 0; i--) {
-                const p = posts[i];
-                
-                // Create the HTML structure for a single post
-                const postHTML = `
-                    <div class="post">
-                        <div class="post-header">
-                            <span class="post-name">>${p.name}</span>
-                            <span class="post-date">[ ${p.date} ]</span>
-                            <span style="float:right; color:#444;">No.${100000 + i}</span>
-                        </div>
-                        <div class="post-content">${p.content}</div>
-                    </div>
-                `;
-                board.innerHTML += postHTML;
-            }
+    function renderFeed() {
+        feed.innerHTML = '';
+        counter.innerText = auraPosts.length + " TRANSMISSIONS LOGGED";
+
+        auraPosts.slice().reverse().forEach(post => {
+            const postCard = document.createElement('div');
+            postCard.className = 'post';
+            
+            let imgHTML = post.image ? `<img src="${post.image}" class="uploaded-img">` : '';
+
+            postCard.innerHTML = `
+                <div class="post-meta">
+                    <span class="post-user">${post.user}</span>
+                    <span>${post.date}</span>
+                </div>
+                <div class="post-body">
+                    ${post.text}
+                </div>
+                ${imgHTML}
+            `;
+            feed.appendChild(postCard);
+        });
+    }
+
+    async function createPost() {
+        const user = document.getElementById('userInput').value || "Anonymous Guest";
+        const text = document.getElementById('msgInput').value;
+        const file = document.getElementById('fileInput').files[0];
+
+        if (!text && !file) {
+            alert("Please add some text or an image!");
+            return;
         }
 
-        // 4. Function to handle the Upload button
-        function submitPost() {
-            let nameVal = document.getElementById('usernameInput').value;
-            let contentVal = document.getElementById('postInput').value;
-
-            // Stop them from posting blank stuff
-            if (contentVal.trim() === "") {
-                alert("ERROR: CANNOT TRANSMIT EMPTY DATA.");
-                return;
-            }
-
-            // If they don't put a name, make them Anonymous
-            if (nameVal.trim() === "") {
-                nameVal = "Anonymous User";
-            }
-
-            // Get current time
-            const now = new Date();
-            const timeString = now.toLocaleDateString() + " " + now.toLocaleTimeString();
-
-            // Create a new post object
-            const newPost = {
-                name: nameVal,
-                content: contentVal,
-                date: timeString
-            };
-
-            // Add it to our array
-            posts.push(newPost);
-
-            // Save the new array to the browser's LocalStorage
-            localStorage.setItem('blackbird_data', JSON.stringify(posts));
-
-            // Clear the text box
-            document.getElementById('postInput').value = "";
-
-            // Redraw the board to show the new post
-            renderBoard();
+        let base64Image = null;
+        if (file) {
+            base64Image = await convertToBase64(file);
         }
 
-        // 5. Secret function to clear the board (for the Dev only)
-        function clearBoard() {
-            if (confirm("WARNING: PURGE ENTIRE SYSTEM DATABASE?")) {
-                posts = [];
-                localStorage.removeItem('blackbird_data');
-                renderBoard();
-            }
-        }
+        const newPost = {
+            user: user,
+            text: text,
+            image: base64Image,
+            date: new Date().toLocaleString()
+        };
 
-        // 6. Run this instantly when the page loads
-        renderBoard();
-    </script>
+        auraPosts.push(newPost);
+        savePosts();
+        renderFeed();
+
+        // Clear Inputs
+        document.getElementById('userInput').value = '';
+        document.getElementById('msgInput').value = '';
+        document.getElementById('fileInput').value = '';
+    }
+
+    function convertToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    // Initialize
+    renderFeed();
+</script>
+
 </body>
 </html>
